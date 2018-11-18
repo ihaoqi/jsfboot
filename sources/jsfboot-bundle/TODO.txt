@@ -1,0 +1,10 @@
+
+1、在调试模式下增加访问独立模块META-INF下页面的功能，这样在开发阶段就不需要把页面放到主项目下了；
+	实现方式：在MANIFEST.MF文件中增加 Project-Path 属性，增加方法是在build.xml中打包Jar时添加如下代码：
+	
+		<jar destfile="${bundle-file}" manifest="${tempPath}/META-INF/MANIFEST.MF">
+			<fileset dir="${tempPath}" includes="**/*.*" />
+			<manifest>
+				<attribute name="Resources-Path" value="${basedir}/META-INF"/>
+			</manifest>
+		</jar>

@@ -1,0 +1,18 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    
+    <div class="layout-footer clearfix">
+        <IMG alt="" src="#{request.contextPath}#{paradiseTheme.config.tailLogoUrl}" />
+        <div class="layout-footer-right">
+			<ui:repeat var="menu" value="#{paradiseTheme.linkMenu.elements}">
+				<p:link href="#{menu.url}" target="#{menu.target}" title="#{menu.value}">
+					<i class="#{menu.icon}"></i>
+				</p:link>
+			</ui:repeat>
+        </div>
+    </div>
+</ui:composition>

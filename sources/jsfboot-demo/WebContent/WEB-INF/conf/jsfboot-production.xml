@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsfboot-configure xmlns="http://jsfboot.easyeip.com/jsfboot-configure"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jsfboot.easyeip.com/jsfboot-configure http://www.easyeip.com/schema/jsfboot/jsfboot-configure-1.0.xsd ">
+	
+	<app-version>
+		<product-name></product-name>
+		<product-version></product-version>
+		<product-title></product-title>
+	</app-version>
+	
+	<app-options>
+		<site-theme>spark</site-theme>
+		<admin-theme>rio</admin-theme>
+		<account-realm>default</account-realm>
+	</app-options>
+	
+	<service-conf name="">
+		<service-param name=""/>
+	</service-conf>
+
+</jsfboot-configure>

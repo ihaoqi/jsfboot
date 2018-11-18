@@ -1,0 +1,35 @@
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+			xmlns:h="http://java.sun.com/jsf/html"
+			xmlns:f="http://java.sun.com/jsf/core"
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+			xmlns:p="http://primefaces.org/ui">
+
+	<div class="ui-fluid">
+		<p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+			<p:inputText value="#{adminDictionary.addDictForm.code}"
+				placeholder="代码*" required="true" requiredMessage="代码不能为空。"/>
+			<h:outputText value="唯一标记，如：sex，添加后将不能修改"/>
+	        <p:inputText value="#{adminDictionary.addDictForm.title}"
+				placeholder="标题*" required="true" requiredMessage="标题不能为空。"/>
+			<h:outputText value="字典说明，如：性别"/>
+			<p:inputText value="#{adminDictionary.addDictForm.catalog}" placeholder="分类"/>
+			<h:outputText value="分类名称，如：员工属性"/>
+	        <p:selectOneRadio value="#{adminDictionary.addDictForm.type}">
+       			<f:selectItem itemLabel="列表值" itemValue="List"/>
+       			<f:selectItem itemLabel="键值对" itemValue="Map"/>
+       		</p:selectOneRadio>
+       		<h:outputText value="字典类型，对应Java的 List 和 Map"/>
+		</p:panelGrid>
+		<p:messages showDetail="true" showSummary="false" closable="true"/>
+		
+		<h:panelGrid columns="2" style="margin:1em;">
+			<p:commandButton value="确定" update="dictTable,dictDetail" styleClass="RedButton"
+					actionListener="#{adminDictionary.endAddDictItem}" global="false"
+					onstart="PF('saveStatus').show()" oncomplete="PF('saveStatus').hide()"/>
+		
+			<p:commandButton value="取消" update="dictTable,dictDetail" immediate="true"
+						actionListener="#{adminDictionary.toDictItemView}" />
+		</h:panelGrid>
+	</div>
+
+</f:subview>

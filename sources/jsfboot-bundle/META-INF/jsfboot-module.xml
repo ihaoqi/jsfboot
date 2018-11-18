@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsfboot-module xmlns="http://jsfboot.easyeip.com/jsfboot-module"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jsfboot.easyeip.com/jsfboot-module http://www.easyeip.com/schema/jsfboot/jsfboot-module-1.0.xsd"
+	load-on-startup="-100">
+	
+	<module-version>
+		<module-name>jsfboot-bundle</module-name>
+		<module-title>jsfboot驱动程序</module-title>
+		<module-version>1.0.0</module-version>
+		<company-name>www.easyeip.com</company-name>
+		<company-description>瑞宝软件</company-description>
+	</module-version>
+	
+	<define-service>
+		<service	name="com.easyeip.jsfboot.core.registry.RegistryService"
+					class="com.easyeip.jsfboot.core.registry.service.DefaultRegistryService"
+					explain="jsfboot注册表服务">
+			<option name="provider">
+				<explain>注册表服务实现，必须支持com.easyeip.jsfboot.core.registry.RegistryService接口。</explain>
+				<ref-service>com.easyeip.jsfboot.core.registry.service.XmlFileRegistryService</ref-service>
+			</option>
+		</service>
+
+		<service	name="com.easyeip.jsfboot.core.secutiry.SecutiryService"
+					class="com.easyeip.jsfboot.core.secutiry.admin.DefaultSecutiryService"
+					explain="jsfboot访问授权服务">
+		</service>
+		
+		<service	name="com.easyeip.jsfboot.core.surface.SurfaceService"
+					class="com.easyeip.jsfboot.core.surface.impl.DefaultSurfaceService"
+					explain="jsfboot主题管理服务">
+		</service>
+
+		<service	name="com.easyeip.jsfboot.core.jdbc.DataSourceService"
+					class="com.easyeip.jsfboot.core.jdbc.impl.DefaultDataSourceService"
+					explain="jsfboot数据源管理服务">
+		</service>
+		
+		<service	name="com.easyeip.jsfboot.core.registry.service.XmlFileRegistryService"
+					class="com.easyeip.jsfboot.core.registry.service.XmlFileRegistryService"
+					explain="基于xml文件的注册表实现">
+			<option name="filePath">
+				<explain>xml注册表文件保存路径</explain>
+				<value></value>
+			</option>
+			<option name="saveDelay">
+				<explain>最后一次修改后多久才保存（毫秒）</explain>
+				<value>3000</value>
+			</option>
+		</service>
+	</define-service>
+	
+	<page-resource>
+		<public-pages>/admin-access-denied.xhtml,/site-access-denied.xhtml</public-pages>
+	</page-resource>
+	
+</jsfboot-module>

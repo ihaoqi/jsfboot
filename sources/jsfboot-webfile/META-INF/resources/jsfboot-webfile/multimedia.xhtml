@@ -1,0 +1,220 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="文件资源" url="#" />
+		</p:breadCrumb>
+	</ui:define>
+    <ui:define name="content">
+    
+    	<h:outputScript name="utils/faces-utils.js" library="jsfboot-bundle" />
+    	<p:growl id="growl" showDetail="true" showSummary="true"/>
+
+   		<div class="ui-lg-4 ui-g-12">
+		<p:panel id="folderPanel" styleClass="AlignHeight" style="min-height:300px;">
+			<f:facet name="header">
+				<span class="Fleft MarTop5">文件夹</span>
+				<p:outputPanel id="folderToolbar" styleClass="Fright" style="font-weight:normal;">
+					<p:commandButton icon="Fs15 fa fa-folder" title="新建"
+						actionListener="#{webFileManager.beginAddFolder}" update="detialPanel"/>
+						
+					<p:commandButton icon="Fs15 fa fa-edit" title="重命名"
+						disabled="#{webFileManager.selectFolder==null}"
+						actionListener="#{webFileManager.beginEditFolder}" update="detialPanel"/>
+						
+					<p:commandButton icon="Fs15 fa fa-trash" title="删除"
+						actionListener="#{webFileManager.beginDeleteFolder}" update="detialPanel"
+						disabled="#{webFileManager.selectFolder==null}"/>
+				</p:outputPanel>
+			</f:facet>
+			
+			<div class="ui-fluid">
+				<p:tree value="#{webFileManager.folderTree}" var="folder" dynamic="true"
+					styleClass="ClearBorder ClearPadding" selectionMode="single">
+					<p:ajax event="select" listener="#{webFileManager.onNodeSelect}" update="folderToolbar, detialPanel" />
+					
+					<p:treeNode type="default" expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
+						<h:outputText value="#{folder.fileName}"/>
+					</p:treeNode>
+				</p:tree>
+			</div>
+			
+			<p:outputPanel rendered="#{webFileManager.folderTree.childCount==0}">
+				<div class="TexAlCenter" style="margin-top:4em;">
+					<i class="Fs40 fa fa-folder-o"></i>
+					<p>无任何文件夹，您可以
+						<p:commandLink value="新建" update="detialPanel"
+						actionListener="#{webFileManager.beginAddFolder}"/>
+						 一个。</p>
+				</div>
+			</p:outputPanel>
+		</p:panel>
+		</div>
+		
+		<p:outputPanel id="detialPanel" styleClass="ui-lg-8 ui-g-12">
+			<p:outputPanel id="fileListPanel" styleClass="AlignHeight">
+				<ui:include src="multimedia/#{webFileManager.detialPanelName}.xhtml">
+					<ui:param name="folder" value="#{webFileManager.selectFolder}"/>
+				</ui:include>
+			</p:outputPanel>
+			<p:outputPanel id="uploadDlgPanel">
+				<ui:include src="multimedia/uploadDlg.xhtml">
+					<ui:param name="folder" value="#{webFileManager.selectFolder}"/>
+				</ui:include>
+			</p:outputPanel>
+		</p:outputPanel>
+		
+		<div class="ui-g-12">
+			<div class="card Fs12">
+				<span class="gray fa fa-warning">
+					本页面用于管理多媒体等网页资源，每个文件有一个访问路径，也可以自定义，
+					 <p:commandLink styleClass="FontBold Blue"
+									actionListener="#{webFileManager.beginProcCustomUrls}"
+					 				update="customUrlDlg" oncomplete="PF('customUrlDlg').show();">
+					 	查看自定义路径</p:commandLink>；
+					</span>
+					更多信息可查看
+					<p:link outcome="#{adminHelpView.helpOutcome}" value="帮助文档" target="_blank">
+						<f:param name="page" value="/jsfboot-webfile/multimedia"/>
+					</p:link>。
+			</div>
+		</div>
+
+		<p:dialog id="customUrlDlg" modal="true" widgetVar="customUrlDlg" width="600" height="300"
+					header="查看自定义路径" dynamic="true">
+			<h:form>
+				<p:dataTable id="customUrlList" var="url" value="#{webFileManager.customResourceUrls}"
+							rowIndexVar="index" rows="5"  emptyMessage="无自定义的路径"
+							paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"> 
+					<p:column headerText="#" width="1em;">
+						#{index+1}
+					</p:column>
+					<p:column headerText="文件名与路径">
+						<div class="Wid100">
+			    			原文件: <a href="#{request.contextPath}#{url.downloadPath}" target="_blank" 
+			    				title="#{url.isInvalid?'无效':'有效'}">#{url.sourcePath}
+			    			<i class="fa #{url.isInvalid?'fa-chain-broken Red':''}"/>
+			    			</a>
+			    		</div>
+			    		<div class="Wid100">
+			    			自定义: <a href="#{request.contextPath}#{url.customUrl}" target="_blank">
+			    			#{url.customUrl} </a>
+			    		</div>
+					</p:column>
+					<p:column headerText="操作" width="3.5em;">
+						<p:commandLink value=" 移除" styleClass="fa fa-close"
+							update="customUrlList" actionListener="#{webFileManager.removeCustomUrl}">
+							<f:attribute name="url" value="#{url}"/>
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+				<div class="EmptyBox20"/>
+				<span class="Fs12 gray fa fa-warning"> 如出现<i class="fa fa-chain-broken Red"/> 图标，表示文件已不存在，建议移除。</span>
+			</h:form>
+			
+			<f:facet name="footer">
+				<div class="Fright">
+	               	<p:commandButton value="关闭" style="width:6em;"
+	               		onclick="PF('customUrlDlg').hide();" type="button"/>
+	               </div>
+	            <div class="ClearBoth"/>
+	        </f:facet>
+		</p:dialog>
+	
+		<h:form id="moveForm">
+		    <p:dialog header="移动文件" id="moveFileDlg" widgetVar="moveFileDlg" width="500" height="300" modal="true">
+
+		   		<div class="ui-fluid">
+		   			<p>移动 #{webFileManager.selectFile.raw.fullPath} 到：</p>
+		   			<p:messages id="moveMsgs" showSummary="false" showDetail="true" closable="true"/>
+					<p:tree value="#{webFileManager.folderTree}" var="folder1" dynamic="true"
+						styleClass="ClearBorder ClearPadding" selectionMode="single"
+						selection="#{webFileManager.selectedMoveNode}">
+		
+						<p:treeNode type="default" expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
+							<h:outputText value="#{folder1.fileName}"/>
+						</p:treeNode>
+					</p:tree>
+				</div>
+	
+				<f:facet name="footer">
+					<div class="Fright">
+		               	<p:commandButton value="确定" style="width:6em;margin-right:1em;"
+		               		actionListener="#{webFileManager.doMoveFileTo}"
+		               		update="moveMsgs,fileListPanel"
+		               		onstart="PF('moveStatus').show();"
+		               		oncomplete="completeCloseDialog('moveFileDlg',xhr,status,args);PF('moveStatus').hide();"/>
+		               	<p:commandButton value="取消" style="width:6em;"
+		               		onclick="PF('moveFileDlg').hide();"/>
+		         	</div>
+		            <div class="ClearBoth"/>
+		        </f:facet>
+		    </p:dialog>
+	    </h:form>
+
+		<h:form id="editForm">
+		    <p:dialog header="文件编辑" id="fileEditDlg" widgetVar="fileEditDlg" width="500" height="300" modal="true">
+		    
+		    	<div class="ui-fluid">
+			    	<h:panelGrid columns="1" styleClass="Wid100">
+			    		<p:outputLabel for="fileName" value="文件名称："/>
+			    		<p:inputText id="fileName" value="#{webFileManager.selectFile.newFileName}"
+			    			required="true" requiredMessage="文件名不能为空。" style="margin-bottom:1em;"/>
+			    		
+			    		<h:outputText value="原始文件访问URL："/>
+			    		<h:panelGrid>
+				    		<a href="#{request.contextPath}#{webFileManager.selectFile.downloadPath}"
+				    			target="_blank">#{webFileManager.selectFile.downloadPath}</a>
+			    		</h:panelGrid>
+
+			    		<h:outputText value="自定义访问URL："
+			    			rendered="#{webFileManager.selectFile.customDownPath!=null}"/>
+			    		<h:panelGrid rendered="#{webFileManager.selectFile.customDownPath!=null}">
+				    		<a href="#{request.contextPath}#{webFileManager.selectFile.customDownPath}"
+					    		target="_blank">#{webFileManager.selectFile.customDownPath}</a>
+				    	</h:panelGrid>
+			    		<p:inputText id="customDownPath" value="#{webFileManager.selectFile.customDownPath}"
+			    			placeholder="自定义URL，如：/favicon.ico" style="margin-bottom:1em;"/>
+			    	</h:panelGrid>
+
+		   			<p:messages id="editMsgs" showSummary="false" showDetail="true" closable="true"/>
+		   			<span class="Fs12 gray fa fa-warning"> 建议文件名与路径中都不要包含中文，防止应编码问题无法访问。</span>
+				</div>
+	
+				<f:facet name="footer">
+					<div class="Fright">
+		               	<p:commandButton value="确定" style="width:6em;margin-right:1em;"
+		               		actionListener="#{webFileManager.doEditFile}"
+		               		update="editMsgs,fileListPanel"
+		               		onstart="PF('editStatus').show();" 
+		               		oncomplete="completeCloseDialog('fileEditDlg',xhr,status,args);PF('editStatus').hide();"/>
+		               	<p:commandButton value="取消" style="width:6em;" immediate="false"
+		               					onclick="PF('fileEditDlg').hide();"/>
+		         	</div>
+		            <div class="ClearBoth"/>
+		        </f:facet>
+		    </p:dialog>
+	    </h:form>
+	    
+		<p:dialog widgetVar="moveStatus" modal="true" closable="false">
+			<div class="TexAlCenter">
+				<i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+				<p>正在移动，请稍后...</p>
+			</div>
+		</p:dialog>
+		
+		<p:dialog widgetVar="editStatus" modal="true" closable="false">
+			<div class="TexAlCenter">
+				<i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+				<p>正在保存，请稍后...</p>
+			</div>
+		</p:dialog>
+    </ui:define>
+
+</ui:composition>

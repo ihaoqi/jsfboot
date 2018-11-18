@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="content">
+		<div class="ui-g-12">
+			<div class="card">
+				<span style="color:#fca752;font-size:18px;">参数错误</span>
+			</div>
+			<div class="card">
+				<p style="word-wrap:break-word">#{pfExceptionHandler.pageUrl} <br/><br/> 页面传入的参数错误，请不要直接通过URL访问页面。</p>
+				
+				<p:button value="返回首页" styleClass="blue-btn" href="/jpn" icon="fa fa-home" style="margin-right:1em;"/>
+				<p:button value="返回页面" onclick="window.history.back();" href="#"/>
+			</div>
+		</div>
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://jsfboot.easyeip.com/jsfboot-configure" 
+		elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://jsfboot.easyeip.com/jsfboot-configure">
+
+    <element name="jsfboot-configure" type="tns:JsfbootConfigureType"></element>
+    
+    <complexType name="JsfbootConfigureType">
+    	<sequence>
+    		<element name="app-version" type="tns:AppVersionType"
+    			minOccurs="1" maxOccurs="1">
+    			<annotation>
+    				<documentation>软件版本信息</documentation>
+    			</annotation>
+    		</element>
+            <element name="app-options" type="tns:AppOptionsType" minOccurs="1" maxOccurs="1"></element>
+    		<element name="service-conf" type="tns:ServiceConfType"
+    			minOccurs="0" maxOccurs="unbounded">
+    			<annotation>
+    				<documentation>服务参数配置</documentation>
+    			</annotation>
+    		</element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="AppVersionType">
+        <all>
+    		<element name="product-name" type="string" minOccurs="1" maxOccurs="1">
+    			<annotation>
+    				<documentation>产品名称，如某某管理系统</documentation>
+    			</annotation>
+    		</element>
+    		<element name="product-version" type="string" minOccurs="1" maxOccurs="1">
+    			<annotation>
+    				<documentation>产品版本号，如1.2.3</documentation>
+    			</annotation>
+    		</element>
+            <element name="product-title" type="string" minOccurs="1" maxOccurs="1"></element>
+            <element name="product-description" type="string" minOccurs="0" maxOccurs="1">
+    			<annotation>
+    				<documentation>产品介绍，支持HTML。</documentation>
+    			</annotation>
+    		</element>
+    		<element name="company-name" type="string" minOccurs="0" maxOccurs="1">
+    			<annotation>
+    				<documentation>公司名称</documentation>
+    			</annotation>
+    		</element>
+    		<element name="company-description" type="string" minOccurs="0" maxOccurs="1">
+    			<annotation>
+    				<documentation>公司介绍，支持HTML。</documentation>
+    			</annotation>
+    		</element>
+    	</all>
+    </complexType>
+    
+    <complexType name="ServiceConfType">
+    	<sequence>
+    		<element name="service-param" type="tns:ServiceParamType" minOccurs="0" maxOccurs="unbounded"></element>
+    	</sequence>
+    	<attribute name="name" type="string" use="required"></attribute>
+    </complexType>
+
+    <complexType name="ServiceParamType">
+    	<attribute name="name" type="string" use="required"></attribute>
+    	<attribute name="value" type="string" use="optional">
+    		<annotation>
+    			<documentation>属性文本值；</documentation>
+    		</annotation></attribute>
+    	<attribute name="ref-bean" type="string" use="optional">
+    		<annotation>
+    			<documentation>jsf或spring的bean名称</documentation>
+    		</annotation></attribute>
+    	<attribute name="ref-service" type="string" use="optional">
+    		<annotation>
+    			<documentation>jsfstarter服务名称</documentation>
+    		</annotation></attribute>
+    </complexType>
+
+    <complexType name="AppOptionsType">
+    	<sequence>
+    		<element name="site-theme" type="string" minOccurs="1"
+    			maxOccurs="1">
+    			<annotation>
+    				<documentation>前台主题名称</documentation>
+    			</annotation>
+    		</element>
+            <element name="admin-theme" type="string" minOccurs="1" maxOccurs="1">
+            	<annotation>
+            		<documentation>后台主题名称</documentation>
+            	</annotation></element>
+            <element name="account-realm" type="string" minOccurs="0"
+    			maxOccurs="1">
+    			<annotation>
+    				<documentation>授权适配器，没有就默认为系统自带的；</documentation>
+    			</annotation>
+            </element>
+    	</sequence>
+    </complexType>
+</schema>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsfboot-configure xmlns="http://jsfboot.easyeip.com/jsfboot-configure"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jsfboot.easyeip.com/jsfboot-configure http://www.easyeip.com/schema/jsfboot/jsfboot-configure-1.0.xsd ">
+
+	<app-version>
+		<product-name>guanlixitong</product-name>
+		<product-version>1.0.0</product-version>
+		<product-title>某某管理系统</product-title>
+		<product-description> 某某行业全方位解决方案 </product-description>
+		<company-name>某某公司</company-name>
+		<company-description>
+			<![CDATA[专业软件供应商 <a href="http://www.easyeip.com" target="_blank">进入公司网站</a>]]>
+		</company-description>
+	</app-version>
+	
+	<app-options>
+		<site-theme>paradise</site-theme>
+		<admin-theme>paradise</admin-theme>
+		<account-realm>jsfboot-users</account-realm>
+	</app-options>
+
+	<!-- 把注册表改为使用数据库 -->
+	<service-conf name="com.easyeip.jsfboot.core.registry.RegistryService">
+		<service-param name="provider1" ref-service="com.easyeip.jsfboot.core.registry.service.MysqlRegistryService" />
+	</service-conf>
+	
+	<!-- 配置注册表数据库JNDI -->
+	<service-conf name="com.easyeip.jsfboot.core.registry.service.MysqlRegistryService">
+		<service-param name="dataSource" value="java:comp/env/jdbc/MysqlJmsite" />
+	</service-conf>
+	
+</jsfboot-configure>

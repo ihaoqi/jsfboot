@@ -1,0 +1,70 @@
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+			xmlns:h="http://java.sun.com/jsf/html"
+			xmlns:f="http://java.sun.com/jsf/core"
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+			xmlns:p="http://primefaces.org/ui">
+
+	<h1>字典介绍</h1>
+	<ol>
+	<li>字典主要用于存储一些静态的业务数据，比如城市列表、姓名等，目前支持两种类型的数据结构：列表与键值对。
+	</li>
+		<ul>
+			<li>列表对应Java的List&lt;String&gt;类型；</li>
+			<li>键值对对应的Java类型是Map&lt;String,String&gt;，在这里还有以列表方式访问的键值对类型：List&lt;KeyValuePair&gt;，KeyValuePair具有getKey()、getValue()方法，返回的类型都是String；</li>
+			<li>键值对的两种取值方式区别在于：Map&lt;String,String&gt;会去重，并且顺序非录入顺序，List&lt;KeyValuePair&gt;则会保持录入时内容与顺序；</li>
+		</ul>
+	<li>字典全部存储在“统一配置”模块中，根路径为：/jsfboot/module/jsfboot-admin/dictionary，每个字典都是下面的一个子结点；</li>
+	<li>字典模块的写效率比较低，建议尽量只存一些需管理员才能修改的配置，而不要存储经常改变的业务数量；</li>
+	</ol>
+	
+	<h1>在XHTML界面上显示字典内容</h1>
+	<pre>// 访问代码为citys的list类型字典，返回的类型为：List&lt;String&gt;
+&lt;ui:repeat var="val" value="＃{dictionaryBean.list('citys')}"&gt;
+    ＃{val}
+&lt;/ui:repeat&gt;
+
+// 访问代码为sex的map类型字典，返回的类型为：List&lt;KeyValuePair&gt;
+&lt;ui:repeat var="val" value="＃{dictionaryBean.map('sex')}"&gt;
+    ＃{val.key},＃{val.value}
+&lt;/ui:repeat&gt;
+
+// 上面 "＃" 是全角的，如果复制上面代码使用需把它替换成半角“#”。
+</pre>
+
+	<h1>在JSF Bean里读取字典内容(方法一)</h1>
+	<pre>
+// 用户注册 bean
+class UserRegistryBeanImpl extends JsfbootBean implements UserRegistryBean{
+    @UseJsfbootService(AdminDictionaryService.class)
+    AdminDictionaryService dictService;
+    
+    public List&lt;String&gt; getCitysList(){
+        return dictService.loadDictionary("citys").asList().getList();
+    }
+    
+    public Map&lt;String,String&gt; getSexMap1(){
+        return dictService.loadDictionary("sex").asMap().getMap();
+    }
+    
+    public List&lt;KeyValuePair&gt; getSexMap2(){
+        return dictService.loadDictionary("sex").asMap().getKVPair();
+    }
+}</pre>
+
+	<h1>在JSF Bean里读取字典内容(方法二)</h1>
+	<pre>
+// 用户注册 bean
+class UserRegistryBeanImpl extends JsfbootBean&lt;HelloBean&gt; implements UserRegistryBean{
+    @UseJsfManagedBean("＃{dictionaryBean}")
+    DictionaryBean dictBean;
+    
+    public List&lt;String&gt; getCitysList(){
+        return dictBean.list("citys");
+    }
+
+    public List&lt;KeyValuePair&gt; getSexMap(){
+        return dictBean.map("sex");
+    }
+}
+// 上面 "＃" 是全角的，如果复制上面代码使用需把它替换成半角“#”。</pre>
+</f:subview>

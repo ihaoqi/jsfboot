@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsfboot-module xmlns="http://jsfboot.easyeip.com/jsfboot-module"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jsfboot.easyeip.com/jsfboot-module http://www.easyeip.com/schema/jsfboot/jsfboot-module-1.0.xsd">
+	
+	<module-version>
+		<module-name>jsfboot-spring-security</module-name>
+		<module-title>jsfboot安全spring-security实现</module-title>
+		<module-version>1.0.0</module-version>
+		<company-name>www.easyeip.com</company-name>
+		<company-description>瑞宝软件</company-description>
+	</module-version>
+	
+
+	<define-service>
+		<service name="com.easyeip.jsfboot.secutiry.spring.SecurityContextRegisterService"
+				class="com.easyeip.jsfboot.secutiry.spring.SecurityContextRegisterService"
+				explain="向jsfboot注册spring-security上下文">
+		</service>
+	</define-service>
+
+</jsfboot-module>

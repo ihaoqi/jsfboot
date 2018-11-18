@@ -1,0 +1,226 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="head">
+		<style type="text/css">
+			body .ui-datatable .ui-datatable-data > tr .ui-row-toggler{
+				color:#8E24AA;
+			}
+		</style>
+		
+		<h:outputScript name="utils/faces-utils.js" library="jsfboot-bundle" />
+	</ui:define>
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="导航菜单" url="#" />
+		</p:breadCrumb>
+	</ui:define>
+	<ui:define name="content">
+		<p:growl id="growl" showDetail="true" showSummary="false" globalOnly="false"/>
+		<div class="ui-g-12">
+			<h:form id="namesPanel">
+			<p:toolbar>
+				<f:facet name="left">
+					<p:outputLabel value="选择要编辑的菜单："
+						styleClass="Fleft MarTop5 ShowOnDesktop" />
+					<p:selectOneMenu value="#{adminMenubar.selMenubarName}"
+						styleClass="Fleft MarRight10" style="width:10em;">
+						<f:selectItems value="#{adminMenubar.menubarList}" var="bar"
+							itemValue="#{bar.name}" itemLabel="#{bar.title}" />
+					</p:selectOneMenu>
+					<p:commandButton value="选择" ajax="false"
+						actionListener="#{adminMenubar.doChangeEditMenubar}"
+						styleClass="Fleft MarRight10 BlueTextButton RaisedButton">
+					</p:commandButton>
+
+					<p:outputLabel value="或" styleClass="Fleft MarTop5 ShowOnDesktop"
+						style="margin-left:0.5em;margin-right:1em;" />
+
+					<p:commandLink value="新建菜单栏" ajax="false" immediate="true"
+						action="nav-menus/new-menu" styleClass="Fleft MarTop5">
+					</p:commandLink>
+				</f:facet>
+				<f:facet name="right">
+					<p:commandButton value="位置管理" action="nav-menus/pos-mgr" ajax="false"
+						icon="fa fa-yelp" actionListener="#{adminMenubar.doBeginMenuPosition}" />
+				</f:facet>
+			</p:toolbar>
+			</h:form>
+		</div>
+
+		<div class="ui-lg-4 ui-g-12 ui-fluid">
+			<p:panel class="card AlignHeight ClearPadding" style="padding:0px;margin-bottom:0px;">
+				<ui:include src="nav-menus/input-menu.xhtml"></ui:include>
+			</p:panel>
+		</div>
+
+		<h:form id="menubar" styleClass="ui-lg-8 ui-g-12">
+			<p:panel rendered="#{adminMenubar.editMenubar != null}" styleClass="AlignHeight">
+			<div>
+				<p:outputLabel value="菜单栏标题：" for="menu_name" />
+				<p:inputText id="menu_name"
+					value="#{adminMenubar.editMenubar.title}" required="true"
+					requiredMessage="菜单栏标题不能为空。" styleClass="MarRight10"
+					disabled="#{adminMenubar.editMenubar.raw.hasMain}" />
+					
+				<p:commandButton value="保存菜单" styleClass="Fright red-btn raised-btn"
+					update="growl,namesPanel,menubar" global="false" icon="fa fa-save"
+					onstart="PF('saveStatus').show()" oncomplete="PF('saveStatus').hide()"
+					actionListener="#{adminMenubar.doSaveEditMenubar}" />
+				<div class="Separator" />
+			</div>
+			<p:dataTable id="list" var="row" value="#{adminMenubar.editMenubar.rows}"
+				emptyMessage="还没有任何菜单项。" paginator="true"
+				paginatorPosition="bottom" rows="10"
+				paginatorAlwaysVisible="false" rowKey="#{row.menu.permName}"
+				selection="#{adminMenubar.editMenubar.selectedRow}"
+				selectionMode="single" rowsPerPageTemplate="10,20,30"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+				<p:ajax event="rowSelect" />
+				<p:column headerText="#" width="1em;" priority="4">
+					<h:outputText styleClass="fa fa-folder-o" rendered="#{row.menuType=='MenuFolder'}"/>
+					<h:outputText styleClass="fa fa-file-text-o" rendered="#{row.menuType=='MenuPage'}" />
+					<h:outputText styleClass="fa fa-link" rendered="#{row.menuType=='MenuLink'}" />
+				</p:column>
+				<p:column headerText="菜单标题">
+					<h:outputText value=" #{row.menu.title}"
+						style="margin-left:#{row.indent*2}em;" styleClass="#{row.menu.icon}" />
+
+					<h:outputText styleClass="fa fa-eye-slash" title="在导航中不可见"
+						rendered="#{row.edit.visible == false}" style="margin-left:5px;" />
+				</p:column>
+				<p:column headerText="来源" priority="4">
+					<h:outputText value="#{row.srcModule} " />
+					<h:outputText title="源已不存在" rendered="#{!row.sourceExist}"
+						styleClass="fa fa-warning Red" />
+				</p:column>
+				<p:column headerText="菜单代码">
+					<h:outputText value="#{row.menu.permName}" />
+				</p:column>
+				<p:column headerText="操作" style="width:11em;">
+					<p:commandLink value=" 编辑" styleClass="fa fa-pencil-square MarRight10"
+						actionListener="#{adminMenubar.editMenubar.beginRowEdit}"
+						update="menuEditForm" oncomplete="PF('menuEditDlg').show();">
+						<f:attribute name="row" value="#{row}" />
+					</p:commandLink>
+					
+					<p:commandLink title="左移" disabled="#{!row.canMoveLeft}"
+						styleClass="fa fa-arrow-left MarRight5"
+						actionListener="#{adminMenubar.editMenubar.doRowMoveLeft}"
+						update="list">
+						<f:attribute name="row" value="#{row}" />
+					</p:commandLink>
+					<p:commandLink title="右移" disabled="#{!row.canMoveRight}"
+						styleClass="fa fa-arrow-right MarRight5"
+						actionListener="#{adminMenubar.editMenubar.doRowMoveRight}"
+						update="list">
+						<f:attribute name="row" value="#{row}" />
+					</p:commandLink>
+					<p:commandLink title="上移" disabled="#{!row.canMoveTop}"
+						styleClass="fa fa-arrow-up MarRight5"
+						actionListener="#{adminMenubar.editMenubar.doRowMoveTop}"
+						update="list">
+						<f:attribute name="row" value="#{row}" />
+					</p:commandLink>
+					<p:commandLink title="下移" disabled="#{!row.canMoveBottom}"
+						styleClass="fa fa-arrow-down MarRight10"
+						actionListener="#{adminMenubar.editMenubar.doRowMoveBottom}"
+						update="list">
+						<f:attribute name="row" value="#{row}" />
+					</p:commandLink>
+
+					<p:commandLink title="删除" styleClass="Fs16 fa fa-trash-o"
+						actionListener="#{adminMenubar.editMenubar.doRowDelete}"
+						update="list">
+						<f:attribute name="row" value="#{row}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+			<div style="padding:1em;">
+				<p:commandLink value=" 删除菜单栏" disabled="#{adminMenubar.editMenubar.raw.hasMain}"
+					actionListener="#{adminMenubar.doDeleteMenubar}" ajax="false" styleClass="fa fa-trash-o"
+					onclick="PF('delStatus').show();">
+					<p:confirm header="删除菜单栏" icon="ui-icon-alert"
+						message="您确定要删除 #{adminMenubar.editMenubar.title} 吗？删除后将不可恢复。"/>
+				</p:commandLink>
+			</div>
+			</p:panel>
+		</h:form>
+		
+		<h:form id="menuEditForm">
+	    <p:dialog header="菜单编辑: #{adminMenubar.editMenubar.editRow.menu.title}" 
+	    		id="menuEditDlg" widgetVar="menuEditDlg" width="500" modal="true">
+	    
+	    	<p:outputPanel id="editMsgs">
+	    		<h:outputText rendered="#{adminMenubar.editMenubar.editRow!=null}">
+					<h:outputText rendered="#{adminMenubar.editMenubar.editRow.menuType=='MenuFolder'}">
+						<ui:include src="nav-menus/edit-folder.xhtml">
+							<ui:param name="editRow" value="#{adminMenubar.editMenubar.editRow}"/>
+						</ui:include>
+					</h:outputText>
+					<h:outputText rendered="#{adminMenubar.editMenubar.editRow.menuType=='MenuPage'}">
+						<ui:include src="nav-menus/edit-page.xhtml">
+							<ui:param name="editRow" value="#{adminMenubar.editMenubar.editRow}"/>
+						</ui:include>
+					</h:outputText>
+					<h:outputText rendered="#{adminMenubar.editMenubar.editRow.menuType=='MenuLink'}">
+						<ui:include src="nav-menus/edit-link.xhtml">
+							<ui:param name="editRow" value="#{adminMenubar.editMenubar.editRow}"/>
+						</ui:include>
+					</h:outputText>
+				</h:outputText>
+				
+				<p:messages closable="true" showSummary="false" showDetail="true"/>
+			</p:outputPanel>
+	
+			<f:facet name="footer">
+				<div class="Fright">
+	               	<p:commandButton value="确定" style="width:6em;margin-right:1em;"
+	               		actionListener="#{adminMenubar.editMenubar.doRowUpdate}"
+	               		update="editMsgs,:menubar:list"
+	               		oncomplete="completeCloseDialog('menuEditDlg',xhr,status,args);"/>
+	               	<p:commandButton value="取消" style="width:6em;" immediate="false"
+	               		onclick="PF('menuEditDlg').hide();"/>
+	         	</div>
+	            <div class="ClearBoth"/>
+	        </f:facet>
+	    </p:dialog>
+	    </h:form>
+			
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+	        <p:commandButton value="确定" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+	        <p:commandButton value="取消" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+	    </p:confirmDialog>
+	    
+		<p:dialog widgetVar="saveStatus" modal="true" closable="false">
+			<div class="TexAlCenter">
+				<i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+				<p>正在保存，请稍后...</p>
+			</div>
+		</p:dialog>
+		<p:dialog widgetVar="delStatus" modal="true" closable="false">
+			<div class="TexAlCenter">
+				<i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+				<p>正在删除，请稍后...</p>
+			</div>
+		</p:dialog>
+
+		<div class="ui-g-12">
+			<div class="card">
+				<span class="Fs12 gray fa fa-warning">
+					菜单修改后务必点击“保存菜单栏”才会生效； 更多信息可查看
+					<p:link outcome="#{adminHelpView.helpOutcome}" value="帮助文档" target="_blank">
+						<f:param name="page" value="/jsfboot-admin/system/nav-menus"/>
+					</p:link>。
+				</span>
+			</div>
+		</div>
+	</ui:define>
+
+</ui:composition>

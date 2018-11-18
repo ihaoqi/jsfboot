@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="数据连接" outcome="../data-sources"/>
+			<p:menuitem value="#{adminDataSource.customForm.oldJndiName==null?'添加':'修改'}数据源" url="#" />
+		</p:breadCrumb>
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="panel1" class="ui-lg-7 ui-g-12 ui-fluid">
+			<p:panel header="数据源参数" styleClass="AlignHeight">
+				<h:panelGrid columns="2" styleClass="Wid100" columnClasses="Wid30 Wid70">
+					<p:outputLabel for="jndiName" value="JNDI名称："/>
+					<p:inputText id="jndiName" value="#{adminDataSource.customForm.name}" 
+						required="true" requiredMessage="JNDI名称不能为空。"
+						disabled="#{adminDataSource.customForm.oldJndiName!=null}"/>
+					<p:outputLabel for="jndiExplain" value="数据源说明："/>
+					<p:inputText id="jndiExplain" value="#{adminDataSource.customForm.explain}" />
+					<p:outputLabel for="driverClass" value="数据库驱动程序："/>
+					<p:selectOneMenu id="driverClass" editable="true"
+						value="#{adminDataSource.customForm.driverClassName}" 
+						required="true" requiredMessage="数据库驱动程序不能为空。">
+						<f:selectItem itemLabel="com.mysql.jdbc.Driver" itemValue="com.mysql.jdbc.Driver"/>
+					</p:selectOneMenu>
+					<p:outputLabel for="connString" value="连接字符串："/>
+					<p:inputTextarea id="connString" rows="2"
+						value="#{adminDataSource.customForm.connectionUrl}" 
+						required="true" requiredMessage="连接字符串不能为空。"/>
+					<p:outputLabel for="userName" value="用户名："/>
+					<p:inputText id="userName" value="#{adminDataSource.customForm.username}"/>
+					<p:outputLabel for="userPassword" value="密码："/>
+					<p:inputText id="userPassword" value="#{adminDataSource.customForm.password}"/>
+				</h:panelGrid>
+				<div class="Separator"/>
+				<h:panelGrid columns="6" styleClass="Wid100">
+					<p:outputLabel for="initialSize" value="initialSize："/>
+					<p:inputNumber id="initialSize" value="#{adminDataSource.customForm.initialSize}"
+						placeholder="初使连接沲大小" title="初使连接沲大小" decimalPlaces="0"/>
+					<p:outputLabel for="minIdle" value="minIdle："/>
+					<p:inputNumber id="minIdle" value="#{adminDataSource.customForm.minIdle}"
+						placeholder="最小连接池数量" title="最小连接池数量" decimalPlaces="0"/>
+					<p:outputLabel for="maxActive" value="maxActive："/>
+					<p:inputNumber id="maxActive" value="#{adminDataSource.customForm.maxActive}"
+						placeholder="最大连接池数量" title="最大连接池数量" decimalPlaces="0"/>
+					<p:outputLabel for="maxWait" value="maxWait："/>
+					<p:inputNumber id="maxWait" value="#{adminDataSource.customForm.maxWait}"
+						placeholder="最长等待时间(毫秒)" title="最长等待时间(毫秒)" decimalPlaces="0"/>
+					<p:outputLabel for="filters" value="filters："/>
+					<p:inputText id="filters" value="#{adminDataSource.customForm.filters}"
+						placeholder="stat,wall,log4j" title="扩展插件名称"/>
+					<p:outputLabel for="queryTimeout" value="queryTimeout：" title="validationQueryTimeout"/>
+					<p:inputNumber id="queryTimeout" value="#{adminDataSource.customForm.queryTimeout}"
+						placeholder="查询超时时间(秒)" title="查询超时时间(秒)" decimalPlaces="0"/>
+				</h:panelGrid>
+				<h:panelGrid columns="1" styleClass="Wid100">
+					<h:panelGroup>
+						<p:outputLabel for="moveParams" value="更多连接沲参数：  "/>
+						<p:link outcome="#{adminHelpView.helpOutcome}" value="查看配置文档" target="_blank">
+							<f:param name="page" value="/jsfboot-admin/system/data-sources/druid-config"/>
+						</p:link>
+					</h:panelGroup>
+					<p:inputTextarea id="moveParams" value="#{adminDataSource.customForm.moveParams}"
+						rows="2" placeholder="参数1=值; 参数2=值; ……"/>
+				</h:panelGrid>
+				
+				<div class="Separator"/>
+				<div class="TexAlCenter">
+					<p:commandButton value="#{adminDataSource.customForm.oldJndiName==null?'添加':'保存'}"
+										style="width:7em;margin-right:1em;" ajax="false"
+										action="#{adminDataSource.doSaveCustomSource}">
+					</p:commandButton>
+		       		<p:commandButton value="取消" ajax="false" immediate="true" 
+		       						action="../data-sources" style="width:7em;">
+		       		</p:commandButton>
+					
+					<p:commandLink value="连接测试" style="float:right;margin-top:0.5em;"
+									actionListener="#{adminDataSource.doCheckDataSource}"
+									
+									update="panel1,panel2" onsuccess="PF('testDlg').show();">
+									
+						<f:attribute name="definition" value="#{adminDataSource.customForm}" />
+						
+					</p:commandLink>
+				</div>
+
+				<div class="EmptyBox10 ClearBoth"/>
+			</p:panel>
+		</h:form>
+
+		<p:outputPanel id="panel2" styleClass="ui-lg-5 ui-g-12">
+			<div class="card ui-fluid AlignHeight">
+				<p:messages closable="true" showSummary="false" showDetail="true"/>
+				<p class="fa fa-bell-o" style="border-bottom:solid #888 2px;line-height:1.5em;padding:0px 2px;"> 说明</p>
+				<ol>
+					<li>jsfboot使用了阿里Druid数据连接沲来管理数据连接，其在性能及可用性等方面做的比较出色；</li>
+					<li>filters参数说明：监控统计用stat，日志记录用log4j，防御sql注入用wall；</li>
+					<li>更多连接沲参数：多个参数用分号隔开，如需换行也必须的分号后换行；</li>
+				</ol>
+			</div>
+		</p:outputPanel>
+		
+		<p:dialog header="连接测试" widgetVar="testDlg" dynamic="true"
+				modal="true" height="200" width="500">
+			<h:form id="dlgForm">
+				<p:poll widgetVar="poll" autoStart="false" interval="1" update="msgs"/>
+				
+				<p:dataList id="msgs" value="#{adminDataSource.checkMessages}" var="msg"
+							type="ordered" rowIndexVar="index" styleClass="ClearBorder"
+							emptyMessage="请检查数据源参数是否完整。">
+					#{msg}
+				</p:dataList>
+			</h:form>
+			<p:ajax event="open" onstart="PF('poll').start();" update=":dlgForm:msgs"/>
+			<p:ajax event="close" onstart="PF('poll').stop();"/>
+			
+			<f:facet name="footer">
+				<div>
+	               	<p:commandButton value="关闭" type="button" 
+	               		onclick="PF('testDlg').hide();" styleClass="Fright"/>
+	               	<div class="ClearBoth"/>
+                </div>
+            </f:facet>
+		</p:dialog>
+	</ui:define>
+
+</ui:composition>

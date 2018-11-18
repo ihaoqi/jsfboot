@@ -1,0 +1,32 @@
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+			xmlns:h="http://java.sun.com/jsf/html"
+			xmlns:f="http://java.sun.com/jsf/core"
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+			xmlns:p="http://primefaces.org/ui">
+
+	<div class="ui-fluid">
+		<p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+			<p:panelGrid>
+				<h2 class="Fs18">修改 #{item.name} 值：</h2>
+			</p:panelGrid>
+			<p:outputLabel value="(缺省值)" rendered="#{adminRegistry.attributeForm.notName == true}"/>
+			<p:inputText value="#{adminRegistry.attributeForm.name}" placeholder="名称*"
+						required="true" requiredMessage="名称不能为空。"
+						maxlength="#{adminRegistry.regProfile.maxNameLength}"
+						rendered="#{adminRegistry.attributeForm.notName == false}"/>
+	        <p:inputTextarea rows="3" value="#{adminRegistry.attributeForm.value}" placeholder="值"
+	        			maxlength="#{adminRegistry.regProfile.maxValueLength}"/>
+	        <p:messages showDetail="true" showSummary="false" closable="true"/>
+		</p:panelGrid>
+		
+		<h:panelGrid columns="2" style="margin:1em;">
+			<p:commandButton value="确定" update="#{detailPanel}"
+						actionListener="#{adminRegistry.endEditItemAttr}">
+			</p:commandButton>
+		
+			<p:commandButton value="取消" update="#{detailPanel}" immediate="true"
+						actionListener="#{adminRegistry.toRegistryItemView}" />
+		</h:panelGrid>
+	</div>
+
+</f:subview>

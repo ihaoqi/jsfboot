@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsfboot-module xmlns="http://jsfboot.easyeip.com/jsfboot-module"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jsfboot.easyeip.com/jsfboot-module http://www.easyeip.com/schema/jsfboot/jsfboot-module-1.0.xsd"
+	load-on-startup="-99">
+	
+	<module-version>
+		<module-name>jsfboot-dictionary</module-name>
+		<module-title>jsfboot字典管理</module-title>
+		<module-version>1.0.0</module-version>
+		<company-name>www.easyeip.com</company-name>
+		<company-description>瑞宝软件</company-description>
+	</module-version>
+	
+	<define-service>
+	
+		<service name="com.easyeip.jsfboot.admin.dictionary.AdminDictionaryService"
+				class="com.easyeip.jsfboot.admin.dictionary.impl.AdminDictionaryServiceImpl"
+				explain="admin通用字典服务">
+		</service>
+
+	</define-service>
+	
+	<page-resource>
+		<admin-menu anchor="system">
+			<menu-item name="dictionary" title="数据字典" outcome="/dictionary" icon="fa fa-book"/>
+		</admin-menu>
+	</page-resource>
+
+</jsfboot-module>

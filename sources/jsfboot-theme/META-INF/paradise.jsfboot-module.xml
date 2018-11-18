@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsfboot-module xmlns="http://jsfboot.easyeip.com/jsfboot-module"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jsfboot.easyeip.com/jsfboot-module http://www.easyeip.com/schema/jsfboot/jsfboot-module-1.0.xsd">
+	
+	<module-version>
+		<module-name>paradise</module-name>
+		<module-title>jsfboot经典主题</module-title>
+		<module-version>1.0.0</module-version>
+		<company-name>www.easyeip.com</company-name>
+		<company-description>瑞宝软件</company-description>
+	</module-version>
+	
+	<page-resource>
+		<public-pages>
+			/error/viewExpired.xhtml,
+			/error/IllegalArgument.xhtml
+		</public-pages>
+	</page-resource>
+	
+	<define-theme image="/images/paradise.png" use-admin="true" use-site="true">
+		<page-template>
+			<main-page>/template/template.xhtml</main-page>
+			<blank-page>/template/template-blank.xhtml</blank-page>
+			<only-content>/template/template-content.xhtml</only-content>
+		</page-template>
+		<menu-position>
+			<position name="user" title="用户菜单"/>
+			<position name="link" title="页脚链接"/>
+		</menu-position>
+		<conf-page>/config.xhtml</conf-page>
+		<login-page>/login.xhtml</login-page>
+		<primefaces-theme>paradise-#{paradiseTheme.config.widgetColor}</primefaces-theme>
+	</define-theme>
+
+</jsfboot-module>

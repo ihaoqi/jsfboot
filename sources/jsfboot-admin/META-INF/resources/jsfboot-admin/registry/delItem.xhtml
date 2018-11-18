@@ -1,0 +1,18 @@
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+			xmlns:h="http://java.sun.com/jsf/html"
+			xmlns:f="http://java.sun.com/jsf/core"
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+			xmlns:p="http://primefaces.org/ui">
+
+		<div class="EmptyBox20"/>
+		<h2 class="Fs20 fa fa-warning"> 您确定要删除 #{item.name} 吗？ 删除后将不可恢复。</h2>
+		<div class="EmptyBox20"/>
+		
+		<h:panelGrid columns="2">
+		<p:commandButton value="确定" actionListener="#{adminRegistry.endDelRegistryItem}"
+						update="#{tablePanel},#{detailPanel}"/>
+		
+		<p:commandButton value="取消" actionListener="#{adminRegistry.toRegistryItemView}" update="#{detailPanel}"/>
+		</h:panelGrid>
+
+</f:subview>

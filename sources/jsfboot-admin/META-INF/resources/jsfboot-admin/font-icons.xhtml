@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{jsfbootTheme.template.content}">
+                
+    <ui:define name="title">
+    	图标浏览
+    </ui:define>
+
+	<ui:define name="content">
+		<div class="ui-g-12">
+	    	<div class="card docs">
+				<ui:repeat var="icon" value="#{adminMenuIcons.awesomeIcons}">
+	        		<p:panel style="text-align:center;margin:2px;" styleClass="Fleft">
+		        		<h:panelGrid columns="1" style="width:100%">
+							<h:outputText styleClass="Fs30 #{icon.cssClass}" title="#{icon.iconName}"/>
+							<h:outputText value="#{icon.cssClass}"/>
+						</h:panelGrid>
+					</p:panel>
+				</ui:repeat>
+				<div class="ClearBoth"/>
+			</div>
+		</div>
+	</ui:define>
+
+</ui:composition>

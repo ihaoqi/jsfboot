@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="head">
+		<style type="text/css">
+			.card tr td{
+				padding: 3px 3px 0px 3px !important;
+			}
+		</style>
+	</ui:define>
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="导航菜单" outcome="../nav-menus" />
+			<p:menuitem value="位置管理" url="#" />
+		</p:breadCrumb>
+	</ui:define>
+    <ui:define name="content">
+    	<div class="ui-lg-7 ui-g-12">
+			<p:panel class="card ui-fluid AlignHeight">
+				<h:form>
+			    	<h:panelGrid columns="1" styleClass="Wid100 TexAlCenter">
+				    	<h2>设置前台主题菜单 (#{adminMenubar.menuPositionForm.siteThemeName})</h2>
+				    	<div class="EmptyBox5"/>
+			    	</h:panelGrid>
+					<p:dataTable var="pair" value="#{adminMenubar.menuPositionForm.sitePosition}">
+						<p:column headerText="菜单位置" width="40%">
+							<h:outputText value="#{pair.title} (#{pair.name})"/>
+						</p:column>
+						<p:column headerText="菜单名称" width="60%">
+							<p:selectOneMenu value="#{pair.menubar}">
+								<f:selectItem itemValue="" itemLabel="(默认)"/>
+			       				<f:selectItems value="#{adminMenubar.menubarList}" var="bar"
+			       					itemValue="#{bar.name}" itemLabel="#{bar.title} (#{bar.name})"/>
+			       			</p:selectOneMenu>
+						</p:column>
+					</p:dataTable>
+					<div class="EmptyBox10"/>
+			    	<h:panelGrid columns="1" styleClass="Wid100 TexAlCenter">
+				    	<h2>设置后台主题菜单 (#{adminMenubar.menuPositionForm.adminThemeName})</h2>
+				    	<div class="EmptyBox5"/>
+			    	</h:panelGrid>
+					<p:dataTable var="pair" value="#{adminMenubar.menuPositionForm.adminPosition}">
+						<p:column headerText="菜单位置" width="40%">
+							<h:outputText value="#{pair.title} (#{pair.name})"/>
+						</p:column>
+						<p:column headerText="菜单名称" width="60%">
+							<p:selectOneMenu value="#{pair.menubar}">
+								<f:selectItem itemValue="" itemLabel="(默认)"/>
+			       				<f:selectItems value="#{adminMenubar.menubarList}" var="bar"
+			       					itemValue="#{bar.name}" itemLabel="#{bar.title} (#{bar.name})"/>
+			       			</p:selectOneMenu>
+						</p:column>
+					</p:dataTable>
+					
+					<div class="TexAlCenter" style="padding-top:10px;padding-bottom:5px;">
+						<div class="EmptyBox10"/>
+			       		<p:commandButton value="确定" ajax="false" onclick="PF('saveStatus').show();"
+			       			action="#{adminMenubar.doSaveMenuPosition}" style="width:7em;margin-right:1em;">
+			       		</p:commandButton>
+			       		<p:commandButton value="取消" ajax="false" immediate="true" 
+			       						action="../nav-menus.xhtml" style="width:7em;">
+			       		</p:commandButton>
+			      	</div>
+		      	</h:form>
+			</p:panel>
+      	</div>
+      	<div class="ui-lg-5 ui-g-12">
+      		<div class="card AlignHeight">
+	      		<p class="fa fa-bell-o" style="border-bottom:solid #888 2px;line-height:1.5em;padding:0px 2px;"> 提示</p>
+	      		<ol>
+	      		<li>后台主题的主菜单不可以设置；</li>
+	      		<li>设置为默认时，主题将使用与位置名称相同的菜单；</li>
+	      		</ol>
+      		</div>
+      	</div>
+		<p:dialog widgetVar="saveStatus" modal="true" closable="false">
+			<div class="TexAlCenter">
+				<i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+				<p>正在保存，请稍后...</p>
+			</div>
+		</p:dialog>
+    </ui:define>
+
+</ui:composition>

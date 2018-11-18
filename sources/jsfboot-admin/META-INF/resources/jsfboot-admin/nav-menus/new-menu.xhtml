@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="导航菜单" outcome="../nav-menus" />
+			<p:menuitem value="新建菜单" url="#" />
+		</p:breadCrumb>
+	</ui:define>
+    <ui:define name="content">
+   
+    	<div class="ui-lg-6 ui-g-12 ui-fluid">
+			<p:panel styleClass="card AlignHeight">
+				<h:form>
+					<h:panelGrid columns="1" width="100%">
+						<p:outputLabel value="新菜单标题 (如 顶层菜单)：" for="menu_title"/>
+						<p:inputText id="menu_title" value="#{adminMenubar.addMenubarForm.title}"
+									required="true" requiredMessage="菜单标题不能为空。"/>
+									
+						<p:outputLabel value="新菜单名称 (如 top-menu)：" for="menu_name"/>
+						<p:inputText id="menu_name" value="#{adminMenubar.addMenubarForm.name}"
+									required="true" requiredMessage="菜单名称不能为空。"/>
+	
+						<p:messages showSummary="false" showDetail="true" closable="true"/>
+					</h:panelGrid>
+					<div class="TexAlCenter" style="padding-top:5px;padding-bottom:5px;">
+			       		<p:commandButton value="确定" action="#{adminMenubar.doAddNewMenubar}"
+			       						style="width:7em;margin-right:1em;" ajax="false"
+			       						onclick="PF('saveStatus').show();">
+			       		</p:commandButton>
+			       		<p:commandButton value="取消" ajax="false" immediate="true" 
+			       						action="../nav-menus.xhtml" style="width:7em;">
+			       		</p:commandButton>
+			      	</div>
+		      	</h:form>
+	
+	      		<div class="ContainerIndent">
+	      			<div class="EmptyBox20"/>
+	      			<p:outputLabel value="注：名称不能重复，并且添加后也不能修改。以下是已存在的菜单："/>
+	      			<p:dataList value="#{adminMenubar.menubarList}"
+	      				var="menu" type="ordered" styleClass="ClearBorder">
+	      				<p:outputLabel value="#{menu.title} -- #{menu.name}"/>
+	      			</p:dataList>
+	      		</div>
+			</p:panel>
+      	</div>
+      	
+      	<div class="ui-lg-6 ui-g-12">
+      		<div class="card AlignHeight">
+      			<p class="fa fa-bell-o" style="border-bottom:solid #888 2px;line-height:1.5em;padding:0px 2px;"> 提示</p>
+      			<p>前台主题 #{adminMenubar.menuPositionForm.siteThemeName} 可配置的菜单如下：</p>
+      			<p:dataList var="pair" type="ordered" styleClass="ClearBorder"
+      				value="#{adminMenubar.menuPositionForm.sitePosition}">
+					<h:outputText value="#{pair.title} -- #{pair.name}"/>
+				</p:dataList>
+				<p>后台主题 #{adminMenubar.menuPositionForm.adminThemeName} 可配置的菜单如下：</p>
+      			<p:dataList var="pair" type="ordered" styleClass="ClearBorder"
+      				value="#{adminMenubar.menuPositionForm.adminPosition}">
+					<h:outputText value="#{pair.title} -- #{pair.name}"/>
+				</p:dataList>
+				
+				<p>在《菜单栏\位置管理》中可把新添加的菜单与主题菜单位置进行配对。</p>
+      		</div>
+      	</div>
+      	
+		<p:dialog widgetVar="saveStatus" modal="true" closable="false">
+			<div class="TexAlCenter">
+				<i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+				<p>正在保存，请稍后...</p>
+			</div>
+		</p:dialog>
+    </ui:define>
+
+</ui:composition>

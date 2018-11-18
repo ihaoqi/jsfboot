@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="deploy" name="jsfboot-webfile">
+
+	<!--下面设置我自己的日期时间格式-->
+	<tstamp prefix="my">
+		<format property="day" pattern="yyyyMMdd"/>
+		<format property="time" pattern="HH:mm:ss"/>
+	</tstamp>
+	
+	<!--下面设置输出文件名称-->
+	<property environment="env"/>
+	<property name="outputDir" value="../jsfboot-demo/WebContent/WEB-INF/lib"/>
+	<property name="tomcatLib" value="D:/Apache/apache-tomcat-7.0.55(x64)/lib"/>
+	<property name="bundle-version" value="1.0.0"/>
+	<property name="tempPath" value="${env.TEMP}/${ant.project.name}"/>
+
+	<!--定义编译文件依赖的外部文件-->
+	<path id="Thirdparty.libraryclasspath">
+		<fileset dir="${tomcatLib}">
+			<include name="**/*.jar"/>
+		</fileset> 
+		<fileset dir="../jsfboot-demo/WebContent/WEB-INF/lib">
+			<include name="jsfboot-bundle-*.jar"/>
+			<include name="jsfboot-helpview-*.jar"/>
+			<include name="myfaces-bundle-*.jar"/>
+			<include name="primefaces-*.jar"/>
+		</fileset>
+	</path>
+	
+	<!--定义编译文件依赖的自身文件-->
+	<path id="project.classpath">
+		<path refid="Thirdparty.libraryclasspath">
+		</path>
+	</path>
+	
+	<!--初使化编译目录、文件-->
+	<target name="init">
+		<mkdir dir="${tempPath}"> </mkdir>
+		<copy includeemptydirs="false" todir="${tempPath}">
+			<fileset dir="sources">
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<!--开始编译-->
+	<target name="build" depends="init">
+		<echo message="begin ${ant.project.name}: ${ant.file}"/>
+		
+		<!-- 打包 bundle -->
+		<property name="bundle-file" value="${outputDir}/${ant.project.name}-${bundle-version}.jar"/>
+		<echo message="build ${ant.project.name} : ${bundle-file} ..."/>
+		<javac debug="true" debuglevel="source,lines,vars"
+			destdir="${tempPath}" source="1.7" target="1.7" encoding="UTF-8">
+			<src path="sources"/>
+			<classpath refid="project.classpath"/>
+		</javac>
+		<copydir dest="${tempPath}/META-INF" src="META-INF"/>
+		<jar destfile="${bundle-file}" manifest="${tempPath}/META-INF/MANIFEST.MF">
+			<fileset dir="${tempPath}" includes="**/*.*" />
+			<manifest>
+				<attribute name="Resources-Path" value="${basedir}/META-INF/resources"/>
+			</manifest>
+		</jar>
+		
+		<!-- 打包源代码 -->
+		<property name="source-file" value="../lasest-version/${ant.project.name}-${bundle-version}-sources.jar"/>
+		<delete file="${source-file}"/>
+		<jar destfile="${source-file}">
+			<fileset dir="sources" includes="**/*.*" />
+			<fileset dir="./" includes="META-INF/**/*.*" />
+		</jar>
+	</target>
+
+	<!-- 清理临时目录 -->
+	<target name="cleantemp">
+		<delete dir="${tempPath}">
+		</delete>
+	</target>
+	
+	<!-- 编译 -->
+	<target name="deploy" depends="cleantemp,build">
+	</target>
+</project>

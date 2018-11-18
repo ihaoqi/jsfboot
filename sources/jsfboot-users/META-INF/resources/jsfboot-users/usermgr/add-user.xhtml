@@ -1,0 +1,104 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="系统帐号" outcome="../usermgr"/>
+			<p:menuitem value="#{registryUserGroup.addUserForm.id==null?'添加':'修改'}帐号" url="#"/>
+		</p:breadCrumb>
+	</ui:define>
+	<ui:define name="content">
+		<h:form class="ui-g-12 ui-lg-7">
+			<p:panel header="#{registryUserGroup.addUserForm.id==null?'添加':'修改'}帐号" styleClass="card AlignHeight">
+				<h:panelGrid columns="2" styleClass="ui-fluid Wid100">
+					<h:outputLabel value="登录名称" for="loginid"/>
+					<p:inputText id="loginid" value="#{registryUserGroup.addUserForm.loginId}"
+								disabled="#{registryUserGroup.addUserForm.id!=null}"
+								placeholder="账号的唯一标记，如手机号、邮件、英文名等"
+								required="true" requiredMessage="登录名称不能为空。"/>
+					<h:outputLabel value="登录密码" for="password" rendered="#{registryUserGroup.addUserForm.id==null}"/>
+					<p:password id="password" value="#{registryUserGroup.addUserForm.password}"
+								rendered="#{registryUserGroup.addUserForm.id==null}"
+								placeholder="不能少于6个字符" feedback="true"
+								promptLabel="输入密码" weakLabel="强度：弱" label="登录密码"
+                    			goodLabel="强度：好" strongLabel="强度：非常好"
+								required="true" requiredMessage="登录密码不能为空。">
+						<f:validateLength minimum="6" maximum="100"/>
+					</p:password>
+					
+					<h:outputLabel value="用户姓名" for="username"/>
+					<p:inputText id="username" value="#{registryUserGroup.addUserForm.userName}"
+								placeholder="账号称呼，可以是真实姓名或昵称等"
+								required="true" requiredMessage="账号名称不能为空。"/>
+								
+					<h:outputText value="归属分组"/>
+					<p:selectOneMenu value="#{registryUserGroup.addUserForm.groupCode}"
+								required="true" requiredMessage="归属分组不能为空。">
+						<f:selectItem itemLabel="-请选择分组-"/>
+						<f:selectItems value="#{registryUserGroup.groupList}" var="g"
+							itemValue="#{g.code}" itemLabel="#{g.title}"/>
+					</p:selectOneMenu>
+					
+					<h:outputText value="关联角色" />
+					<p:panel>
+						<p:selectManyCheckbox value="#{registryUserGroup.addUserForm.roles}"
+												layout="grid" columns="4">
+							<f:selectItems value="#{registryUserRole.roleList}" var="g"
+								itemValue="#{g.code}" itemLabel="#{g.title}"/>
+						</p:selectManyCheckbox>
+					</p:panel>
+					
+					<h:outputText value="账号标记"/>
+					<p:panel>
+						<h:panelGrid columns="2">
+							<h:outputText value=" 账号是否可用，禁用后用户将不能登录：" styleClass="fa fa-lock"/>
+							<p:inputSwitch value="#{registryUserGroup.addUserForm.enabled}"
+										onLabel="有效" offLabel="禁用"/>
+							
+							<h:outputText value=" 登录密码是否过期，过期后需修改密码：" styleClass="fa fa-key"/>
+							<p:inputSwitch value="#{registryUserGroup.addUserForm.passwordNonExpired}"
+										onLabel="有效" offLabel="过期"/>
+						</h:panelGrid>
+					</p:panel>
+					
+					<h:outputLabel value="账号说明" for="explain"/>
+					<p:inputTextarea id="explain" rows="2"
+							value="#{registryUserGroup.addUserForm.explain}"/>
+				</h:panelGrid>
+				
+				<div class="Separator"/>
+				<div class="TexAlCenter">
+					<p:commandButton value="确定" action="#{registryUserGroup.endAddUser}"
+									rendered="#{registryUserGroup.addUserForm.id==null}"
+									style="width:7em;margin-right:1em;" ajax="false">
+					</p:commandButton>
+					<p:commandButton value="确定" action="#{registryUserGroup.endEditUser}"
+									rendered="#{registryUserGroup.addUserForm.id!=null}"
+									style="width:7em;margin-right:1em;" ajax="false">
+					</p:commandButton>
+					
+		       		<p:commandButton value="取消" ajax="false" immediate="true" 
+		       						action="../usermgr" style="width:7em;">
+		       		</p:commandButton>
+				</div>
+			</p:panel>
+		</h:form>
+		<div class="ui-g-12 ui-lg-5">
+			<div class="card ui-fluid AlignHeight">
+				<p:messages closable="true" showSummary="false" showDetail="true"/>
+				<p class="fa fa-bell-o" style="border-bottom:solid #888 2px;line-height:1.5em;padding:0px 2px;"> 说明</p>
+				<ol>
+					<li>账号创建后其登录名称将不能更改；</li>
+					<li>登录密码会进行加盐存储，不会存储真实填写的密码；</li>
+					<li>如果您希望用户首次登录后修改密码，请设置密码已过期；</li>
+				</ol>
+			</div>
+		</div>
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,71 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="系统帐号" outcome="usermgr"/>
+			<p:menuitem value="分组管理" url="#"/>
+		</p:breadCrumb>
+	</ui:define>
+	<ui:define name="content">
+		<p:growl id="growl" showDetail="true" showSummary="false" globalOnly="false"/>
+		<div class="ui-g-12">
+			<h:form class="card">
+				<div>
+					<div class="Fleft">
+						<p:commandButton value="添加分组" action="usermgr/add-group"
+							ajax="false" icon="fa fa-plus-circle" styleClass="MarRight5">
+						</p:commandButton>
+					</div>
+					<div class="ClearBoth" />
+					<div class="Separator" />
+				</div>
+
+				<p:dataTable id="grouplist" value="#{registryUserGroup.groupList}" var="group"
+							rowIndexVar="row" emptyMessage="无任何分组。"
+							paginator="true" paginatorPosition="bottom" rows="15" paginatorAlwaysVisible="false">
+					<p:column headerText="#" width="2em;">
+						#{row+1}
+					</p:column>
+					<p:column headerText="名称">
+						#{group.title}
+					</p:column>
+					<p:column headerText="代码" width="10em;">
+						#{group.code}
+					</p:column>
+					<p:column headerText="说明">
+						#{group.explain}
+					</p:column>
+					<p:column headerText="状态" width="5em;" styleClass="TexAlCenter">
+						#{group.enabled?'启用':'停用'}
+					</p:column>
+					<p:column headerText="操作" width="8em;">
+						<p:commandLink value=" 修改" styleClass="fa fa-edit MarRight10" 
+								action="usermgr/add-group" ajax="false">
+							<f:param name="group" value="#{group.code}"/>
+						</p:commandLink>
+						
+						<p:commandLink value=" 删除" styleClass="fa fa-trash-o " 
+								actionListener="#{registryUserGroup.delAccountGroup}"
+								update="growl,grouplist">
+							<f:attribute name="group" value="#{group}"/>
+							<p:confirm header="删除分组" icon="ui-icon-alert"
+								message="您确定要删除 #{group.title} 吗？删除后将不可恢复。"/>
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</div>
+		
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+	        <p:commandButton value="确定" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+	        <p:commandButton value="取消" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+	    </p:confirmDialog>
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsfboot-module xmlns="http://jsfboot.easyeip.com/jsfboot-module"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jsfboot.easyeip.com/jsfboot-module http://www.easyeip.com/schema/jsfboot/jsfboot-module-1.0.xsd"
+	load-on-startup="-99">
+	
+	<module-version>
+		<module-name>jsfboot-admin</module-name>
+		<module-title>jsfboot后台管理</module-title>
+		<module-version>1.0.0</module-version>
+		<company-name>www.easyeip.com</company-name>
+		<company-description>瑞宝软件</company-description>
+	</module-version>
+	
+	<define-service>
+
+		<service name="com.easyeip.jsfboot.admin.datasource.CustomDataSourceService"
+				class="com.easyeip.jsfboot.admin.datasource.service.CustomDataSourceServiceImpl"
+				explain="admin自定义数据源">
+		</service>
+		
+		<service name="com.easyeip.jsfboot.admin.AdminScheduleService"
+				class="com.easyeip.jsfboot.admin.schedule.impl.AdminScheduleServiceImpl"
+				explain="admin任务执行管理">
+		</service>
+
+	</define-service>
+	
+	<page-resource>
+		<admin-menu anchor="">
+			<menu-item name="dashboard" title="系统信息" outcome="/dashboard" icon="fa fa-laptop"/>
+			<menu-item name="system" title="控制面板" icon="fa fa-cog">
+				<menu-item name="console" title="模块选项" outcome="/console" icon="fa fa-cube">
+					<public-pages>
+						/console/module_info.xhtml,
+						/console/module_conf.xhtml,
+						/console/theme_conf.xhtml
+					</public-pages>
+				</menu-item>
+				<menu-item name="data-sources" title="数据连接" outcome="/data-sources" icon="fa fa-link">
+					<public-pages>
+						/data-sources/add-custom.xhtml
+					</public-pages>
+				</menu-item>
+				<menu-item name="nav-menus" title="导航菜单" outcome="/nav-menus" icon="fa fa-windows">
+					<public-pages>
+						/nav-menus/new-menu.xhtml,
+						/nav-menus/pos-mgr.xhtml
+					</public-pages>
+				</menu-item>
+				<menu-item name="registry" title="统一配置" outcome="/registry" icon="fa fa-slack"/>
+			</menu-item>
+		</admin-menu>
+		<public-pages>
+			font-icons.xhtml
+		</public-pages>
+	</page-resource>
+
+</jsfboot-module>

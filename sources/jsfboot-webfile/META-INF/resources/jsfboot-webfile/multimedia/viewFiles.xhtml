@@ -1,0 +1,110 @@
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+			xmlns:h="http://java.sun.com/jsf/html"
+			xmlns:f="http://java.sun.com/jsf/core"
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+			xmlns:p="http://primefaces.org/ui">
+			
+	<style type="text/css">
+		.fileCard{
+			border: 1px solid #c7cdd1;
+		}
+	</style>
+
+	<p:panel styleClass="AlignHeight ClearPadding">
+		<f:facet name="header">
+			<span class="Fleft MarTop5">#{folder==null?'文件列表':folder.raw.fullPath}</span>
+			<div class="Fright" style="font-weight:normal;">
+				<p:commandButton icon="Fs15 fa fa-cloud-upload" value="上传文件"
+								disabled="#{webFileManager.selectFolder == null}"
+								onclick="PF('uploadDlg').show();"/>
+			</div>
+		</f:facet>
+
+		<p:outputPanel rendered="#{folder == null}">
+			<div class="TexAlCenter" style="margin-top:4em;">
+				<i class="Fs40 fa fa-folder-o"></i>
+				<p>请选择一个文件夹。</p>
+			</div>
+		</p:outputPanel>
+		<p:outputPanel rendered="#{folder != null and folder.fileCount == 0}">
+			<div class="TexAlCenter" style="margin-top:4em;">
+				<i class="Fs40 fa fa-dropbox"></i>
+				<p>空文件夹，您可以
+						<p:commandLink styleClass="fa fa-cloud-upload" value="上传"
+								disabled="#{webFileManager.selectFolder == null}"
+								onclick="PF('uploadDlg').show();"/> 文件。
+				</p>
+			</div>
+		</p:outputPanel>
+		
+		<h:form id="form" rendered="#{folder != null and folder.fileCount > 0}">
+
+			<p:dataTable var="file" value="#{folder.files}" rowIndexVar="index"
+				rows="10" paginatorAlwaysVisible="false"
+				paginator="true" paginatorPosition="bottom">
+				
+				<p:column headerText="#" width="1.5em;" styleClass="TexAlCenter">
+					#{index+1}
+				</p:column>
+				
+				<p:column headerText="图标" width="50px;" styleClass="TexAlCenter">
+					<h:graphicImage alt="略缩图" style="max-height:50px;max-width:70px;margin:-4px -10px -8px -10px;"
+						value="#{file.isImageFile?file.downloadPath:'/jsfboot-webfile/multimedia/unknown-file.png'}"/>
+				</p:column>
+				
+				<p:column headerText="文件">
+					<div class="Wid100">
+						<p:link href="#{file.downloadPath}" target="_blank" title="浏览文件">#{file.raw.fileName}</p:link>
+						<h:outputText rendered="#{file.customDownPath != null}">
+							<a href="#{request.contextPath}#{file.customDownPath}"
+								target="_blank" class="fa fa-chain Blue" title="自定义URL"/>
+						</h:outputText>
+					</div>
+					<div class="Wid100">
+						<div class="EmptyBox5"/>
+						<div class="Fright">
+							<p:commandLink value=" 编辑" styleClass="MarRight10 fa fa-edit"
+											update=":editForm:fileEditDlg"
+											oncomplete="PF('fileEditDlg').show();"
+											actionListener="#{webFileManager.beginEditFile}">
+								<f:attribute name="file" value="#{file}"/>
+							</p:commandLink>
+							
+							<p:commandLink value=" 删除" styleClass="MarRight10 fa fa-trash" update="growl,fileListPanel"
+								actionListener="#{webFileManager.doDeleteFile}">
+								<f:attribute name="file" value="#{file}"/>
+								<p:confirm header="删除文件" icon="ui-icon-alert"
+									message="您确定要删除 #{file.raw.fileName} 吗？删除后将不可恢复。"/>
+							</p:commandLink>
+							
+							<p:commandLink value=" 移动" styleClass="fa fa-folder-o"
+											update=":moveForm:moveFileDlg" oncomplete="PF('moveFileDlg').show();"
+											actionListener="#{webFileManager.beginMoveFile}">
+								<f:attribute name="file" value="#{file}"/>
+							</p:commandLink>
+						</div>
+					</div>
+				</p:column>
+
+				<p:column headerText="更新日期" width="10em;">
+					<div class="Wid100">
+						<h:outputText value="#{file.raw.createTime}" styleClass="Fright">
+							<f:convertDateTime pattern="yyyy/MM/dd hh:mm:ss" timeZone="GMT+8"/>
+						</h:outputText>
+					</div>
+					<div class="EmptyBox5"/>
+					<div class="Wid100">
+						<h:outputText value="#{file.fileSize}" styleClass="Fright"/>
+					</div>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+	</p:panel>
+	
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="确定" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="取消" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+    
+</f:subview>

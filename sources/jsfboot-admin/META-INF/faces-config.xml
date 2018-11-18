@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+    
+    <name>jsfboot_admin</name>
+
+    <managed-bean>
+    	<managed-bean-name>adminConsole</managed-bean-name>
+    	<managed-bean-class>com.easyeip.jsfboot.admin.bean.impl.AdminConsoleBeanImpl</managed-bean-class>
+    	<managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+    	<managed-bean-name>adminRegistry</managed-bean-name>
+    	<managed-bean-class>com.easyeip.jsfboot.admin.bean.impl.AdminRegistryBeanImpl</managed-bean-class>
+    	<managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+    	<managed-bean-name>adminMenubar</managed-bean-name>
+    	<managed-bean-class>com.easyeip.jsfboot.admin.bean.impl.AdminMenubarBeanImpl</managed-bean-class>
+    	<managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+    	<managed-bean-name>adminDataSource</managed-bean-name>
+    	<managed-bean-class>com.easyeip.jsfboot.admin.datasource.bean.AdminDataSourceBeanImpl</managed-bean-class>
+    	<managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+    	<managed-bean-name>adminMenuIcons</managed-bean-name>
+    	<managed-bean-class>com.easyeip.jsfboot.admin.bean.impl.AdminMenuIconsBeanImpl</managed-bean-class>
+    	<managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+</faces-config>

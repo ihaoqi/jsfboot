@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="#{jsfbootTheme.template.content}">
+
+	<ui:define name="content">
+		<div class="ui-g-12">
+			<div class="card TexAlCenter">
+				<div style="margin:0 auto;max-width:30em;padding:8em 0em;">
+					<h2 style="color: red;">警告：请确认您有本系统的访问权限？</h2>
+					<BR />
+					<h:outputText rendered="#{jsfbootConfig.runtimeInfo.developmentMode}">
+						<p>
+							如果还没配置任何菜单，可进入 <A
+								href="#{request.contextPath}/jpn/admin" style="font-weight: bold;">后台管理</A>
+							配置。
+						</p>
+					</h:outputText>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+
+</ui:composition>

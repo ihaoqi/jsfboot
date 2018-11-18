@@ -1,0 +1,26 @@
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+			xmlns:h="http://java.sun.com/jsf/html"
+			xmlns:f="http://java.sun.com/jsf/core"
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+			xmlns:p="http://primefaces.org/ui">
+
+	<p:dataTable var="auth" value="#{adminConsole.authProviderList}" emptyMessage="一个授权适配器都没有。"
+				rowIndexVar="rowId" paginator="true" paginatorPosition="bottom" rows="5"
+				paginatorAlwaysVisible="false">
+		<p:column headerText="序号" width="4em;">
+			<h:outputText value="#{rowId+1}" />
+		</p:column>
+		<p:column headerText="名称" width="20em;">
+			<p><h:outputText value="#{auth.longName}" />
+				<p:outputLabel styleClass="ui-button ui-state-default ui-corner-all" value="当前"
+					style="color:#ffffff;cursor:default;margin-left:5px;padding-left:3px;padding-right:3px;"
+					title="系统正使用此适配器" rendered="#{auth.longName == adminConsole.runStatusInfo.currentAdapter}"/>
+			</p>
+		</p:column>
+		<p:column headerText="说明">
+			<p><h:outputText value="#{auth.definition.title}" /></p>
+			<p><h:outputText value="#{auth.definition.explain}" /></p>
+		</p:column>
+	</p:dataTable>
+
+</f:subview>

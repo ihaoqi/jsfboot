@@ -1,0 +1,31 @@
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+			xmlns:h="http://java.sun.com/jsf/html"
+			xmlns:f="http://java.sun.com/jsf/core"
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+			xmlns:p="http://primefaces.org/ui">
+
+	<p:panel styleClass="AlignHeight">
+		<h:form>
+		<p:panelGrid columns="1" styleClass="ui-panelgrid-blank">
+			<p:panelGrid>
+			<h2 class="Fs18">在 #{webFileManager.selectFolder==null?'/':webFileManager.selectFolder.raw.fullPath} 下添加文件夹：</h2>
+			</p:panelGrid>
+			<p:outputLabel for="name" value="文件夹名称："/>
+			<p:inputText id="name" value="#{webFileManager.addFolderForm.name}"
+						required="true" requiredMessage="名称不能为空。" style="width:20em;"/>
+	        <p:messages showDetail="true" showSummary="false" closable="true"/>
+		</p:panelGrid>
+		
+		<span class="Fs12 gray fa fa-warning"> 建议名称中不要包含中文，防止应编码问题无法访问。</span>
+		
+		<h:panelGrid columns="2" style="margin:1em;">
+			<p:commandButton value="确定" update="folderPanel,detialPanel" style="width:5em;"
+								actionListener="#{webFileManager.endAddFolder}"/>
+		
+			<p:commandButton value="取消" update="detialPanel" immediate="true" style="width:5em;"
+								actionListener="#{webFileManager.showFolderFiles}" />
+		</h:panelGrid>
+		</h:form>
+	</p:panel>
+
+</f:subview>

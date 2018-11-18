@@ -1,0 +1,121 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="模块选项" outcome="../console"/>
+			<p:menuitem value="模块详情" url="#" />
+		</p:breadCrumb>
+	</ui:define>
+    <ui:define name="content">
+    	<div class="ui-lg-6 ui-g-12">
+			<p:panel header="#{adminConsole.showModule.row.moduleInfo.moduleTitle}"
+					style="height:100%;">
+			
+				<f:facet name="actions">
+					<h:form class="Fright" style="padding-left:5px;padding-right:5px;">
+					<p:commandLink value="配置" action="module_conf" ajax="false" immediate="true"
+									rendered="#{adminConsole.showModule.confpage!=null}">
+						<f:param name="moduleName" value="#{adminConsole.showModule.row.name}"/>
+					</p:commandLink>
+					</h:form>
+				</f:facet>
+			
+				<h:panelGrid columns="2" styleClass="Wid100">
+					<h:outputText value="名称："/>
+					<h:outputText value="#{adminConsole.showModule.row.moduleInfo.moduleName}"/>
+					<h:outputText value="版本："/>
+					<h:outputText value="#{adminConsole.showModule.row.moduleInfo.moduleVersion}"/>
+					<h:outputText value="标题："/>
+					<h:outputText value="#{adminConsole.showModule.row.moduleInfo.moduleTitle}"/>
+					<h:outputText value="模块简介："/>
+					<h:outputText value="#{adminConsole.showModule.row.moduleInfo.moduleDescription}"/>
+					<h:outputText value="开发商："/>
+					<h:outputText value="#{adminConsole.showModule.row.moduleInfo.companyName}"/>
+					<h:outputText value="开发商简介："/>
+					<h:outputText value="#{adminConsole.showModule.row.moduleInfo.companyDescription}"/>
+				</h:panelGrid>
+			</p:panel>
+		</div>
+		
+		<p:outputPanel styleClass="ui-lg-6 ui-g-12" rendered="#{adminConsole.showModule.haveUserAdaptive}">
+			<p:panel header="授权适配器" style="height:100%;">
+				<h:panelGrid columns="2" styleClass="Wid100">
+					<h:outputText value="名称："/>
+					<h:outputText value="#{adminConsole.showModule.row.name}"/>
+					<h:outputText value="标题："/>
+					<h:outputText value="#{adminConsole.showModule.row.accountRealm.title}"/>
+					<h:outputText value="说明："/>
+					<h:outputText value="#{adminConsole.showModule.row.accountRealm.explain}"/>
+				</h:panelGrid>
+			</p:panel>
+		</p:outputPanel>
+		
+		<p:outputPanel styleClass="ui-lg-6 ui-g-12" rendered="#{adminConsole.showModule.haveMenuBar}">
+			<p:panel header="模块页面" styleClass="ui-fluid" style="height:100%;">
+				<p:tree var="menu" value="#{adminConsole.showModule.resourceTree}" styleClass="Wid100" style="border:0px;">
+	
+					<p:treeNode type="default" icon="ui-icon-suitcase">
+	                     		<h:outputText value="#{menu.title}" />
+	                      </p:treeNode>
+	                      
+	                      <p:treeNode type="menu" icon="ui-icon-note">
+	                     		<h:outputText value="#{menu.title} - #{menu.name}" />
+	                      </p:treeNode>
+				</p:tree>
+			</p:panel>
+		</p:outputPanel>
+		
+		<p:outputPanel class="ui-lg-6 ui-g-12" rendered="#{adminConsole.showModule.haveTheme}">
+			<p:panel header="内置主题" style="height:100%;">
+			
+				<f:facet name="actions">
+					<h:form class="Fright" style="padding-left:5px;padding-right:5px;">
+					<p:commandLink value="配置" ajax="false" action="theme_conf"
+							rendered="#{adminConsole.showModule.row.moduleTheme.confPage!=null}">
+						<f:param name="moduleName" value="#{adminConsole.showModule.row.name}"/>
+					</p:commandLink>
+					</h:form>
+				</f:facet>
+			
+				<h:panelGrid columns="2" styleClass="Wid100">
+					<h:outputText value="支持前台："/>
+					<h:outputText value="#{adminConsole.showModule.row.moduleTheme.useSite?'支持':'不支持'}"/>
+					<h:outputText value="支持后台："/>
+					<h:outputText value="#{adminConsole.showModule.row.moduleTheme.useAdmin?'支持':'不支持'}"/>
+					<h:outputText value="主题界面："/>
+					<h:outputLink value="#{request.contextPath}#{adminConsole.showModule.row.moduleTheme.imagePath}"
+						target="_blank" title="点击预览大图">
+						<h:graphicImage value="#{adminConsole.showModule.row.moduleTheme.imagePath}"
+							alt="#{adminConsole.showModule.row.moduleInfo.moduleTitle}" 
+							style="min-height:100px;max-height:200px;max-width:200px;border:1px solid #dee4e9;"/>
+					</h:outputLink>
+				</h:panelGrid>
+			</p:panel>
+		</p:outputPanel>
+
+    	<p:outputPanel class="ui-g-12" rendered="#{adminConsole.showModule.haveService}">
+			<p:panel header="公共服务" style="height:100%;">
+				<p:dataTable var="serv" resizableColumns="true"  emptyMessage="无任何服务。"
+					value="#{adminConsole.showModule.row.serviceList}" rowIndexVar="idx">
+					<p:column headerText="序号" width="3em;">
+						<h:outputText value="#{idx+1}"/>
+					</p:column>
+					<p:column headerText="名称">
+						<h:outputText value="#{serv.serviceName}"/>
+					</p:column>
+					<p:column headerText="说明">
+						<h:outputText value="#{serv.explain}"/>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</p:outputPanel>
+
+    </ui:define>
+
+</ui:composition>

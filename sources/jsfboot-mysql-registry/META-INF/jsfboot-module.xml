@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsfboot-module xmlns="http://jsfboot.easyeip.com/jsfboot-module"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jsfboot.easyeip.com/jsfboot-module http://www.easyeip.com/schema/jsfboot/jsfboot-module-1.0.xsd">
+	
+	<module-version>
+		<module-name>mysql-registry</module-name>
+		<module-title>MYSQL注册表实现</module-title>
+		<module-version>1.0.0</module-version>
+		<company-name>www.easyeip.com</company-name>
+		<company-description>瑞宝软件</company-description>
+	</module-version>
+	
+	<define-service>
+		<service	name="com.easyeip.jsfboot.core.registry.service.MysqlRegistryService"
+					class="com.easyeip.jsfboot.core.registry.service.MysqlRegistryService"
+					explain="基于mysql的注册表实现">
+			<option name="dataSource">
+				<explain>数据库JNDI连接名称</explain>
+				<value></value>
+			</option>
+			<option name="tablePrefix">
+				<explain>表名前缀</explain>
+				<value>jsfboot_</value>
+			</option>
+		</service>
+	</define-service>
+</jsfboot-module>

@@ -1,0 +1,34 @@
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panelGrid columns="2" columnClasses="Wid25,Wid75"
+				styleClass="ui-panelgrid-blank ui-fluid Wid100">
+				
+		<p:outputLabel value="菜单标题：" for="folder_title" />
+		<p:inputText id="folder_title" value="#{editRow.edit.title}"
+			required="true" requiredMessage="菜单标题不能为空。" />
+		<p:outputLabel value="菜单名称：" for="folder_name" />
+		<p:inputText id="folder_name" value="#{editRow.edit.name}"
+			required="true" requiredMessage="菜单名称不能为空。" />
+		<p:outputLabel value="菜单图标：" for="folder_icon" />
+		<p:panelGrid columns="2" styleClass="ui-panelgrid-blank" columnClasses="Wid75,Wid25">
+			<p:inputText id="folder_icon" value="#{editRow.edit.icon}"/>
+			<p:link value="浏览" outcome="font-icons" target="_blank"/>
+		</p:panelGrid>
+		<p:outputLabel value="链接地址：" for="link_url" />
+		<p:inputText id="link_url" required="true"
+			requiredMessage="链接地址不能为空。" value="#{editRow.edit.url}" />
+		<h:outputText value="在导航中显示："/>
+		<h:panelGroup>
+			<p:inputSwitch offLabel="不显示" onLabel="显示" value="#{editRow.edit.visible}" styleClass="MarRight10"/>
+			<p:selectOneMenu value="#{editRow.edit.target}" style="width:10em;">
+				<f:selectItem itemLabel="在当前页打开" itemValue="cur"/>
+				<f:selectItem itemLabel="在新页面打开" itemValue="new" />
+			</p:selectOneMenu>
+		</h:panelGroup>
+	</p:panelGrid>
+
+</f:subview>

@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="模块选项" url="#" />
+		</p:breadCrumb>
+	</ui:define>
+    <ui:define name="content">
+    	<div class="ui-g-12">
+	        <p:tabView activeIndex="#{param['tab']==null?0:param['tab']}" styleClass="ClearPadding">
+	        	<p:tab title="已安装模块 (#{adminConsole.runStatusInfo.jmsiteModuleCount})">
+	        		<ui:include src="console/module_list.xhtml"/>
+	        	</p:tab>
+	        	<p:tab title="系统主题 (#{adminConsole.runStatusInfo.jmsiteThemeCount})">
+	        		<ui:include src="console/theme_list.xhtml"/>
+	        	</p:tab>
+
+	        </p:tabView>
+        </div>
+    </ui:define>
+
+</ui:composition>

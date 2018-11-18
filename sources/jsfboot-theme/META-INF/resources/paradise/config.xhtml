@@ -1,0 +1,200 @@
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<style type="text/css">
+		.width8em{
+			width:8em;
+		}
+	</style>
+	
+	<h:form styleClass="ui-g">
+	<div class="ui-g-12 ui-lg-6 ui-fluid">
+		<p:fieldset legend="默认选项" styleClass="AlignHeight">
+		<h:panelGrid columns="2" styleClass="Wid100" columnClasses="width8em">
+			<p:outputLabel for="appTitle" value="系统名称(标题)："/>
+			<p:inputText id="appTitle" value="#{paradiseTheme.configForm.appTitle}"
+				placeholder="默认: ＃{jsfbootConfig.appVersion.productTitle}"/>
+				
+			<p:outputLabel for="headLogo1" value="头部图标地址："/>
+			<p:inputText id="headLogo1" value="#{paradiseTheme.configForm.siteHeadLogoUrl}" 
+						placeholder="例如: /jresource/images/logo1.png"/>
+			<p:outputLabel for="tailLogo1" value="尾部图标地址："/>
+			<p:inputText id="tailLogo1" value="#{paradiseTheme.configForm.tailLogoUrl}" 
+						placeholder="例如: /jresource/images/logo2.png"/>
+			
+			<h:outputText value="菜单模式："/>
+			<h:panelGrid columns="2" styleClass="Wid100">
+				<p:selectOneButton value="#{paradiseTheme.configForm.siteMenuMode}">
+					<f:selectItem itemLabel="固定" itemValue="layout-menu-static"/>
+					<f:selectItem itemLabel="浮动" itemValue="layout-menu-overlay"/>
+					<f:selectItem itemLabel="侧边" itemValue="layout-menu-slim"/>
+				</p:selectOneButton>
+				<p:selectOneButton value="#{paradiseTheme.configForm.siteMenuLightness}">
+					<f:selectItem itemLabel="亮色" itemValue="layout-menu-bright"/>
+					<f:selectItem itemLabel="暗色" itemValue="layout-menu-dark"/>
+				</p:selectOneButton>
+			</h:panelGrid>
+			<h:outputText value=""/>
+			<h:panelGrid columns="2" styleClass="Wid100">
+				<h:outputText value="菜单颜色"/>
+				<h:outputText value="控件颜色"/>
+			</h:panelGrid>
+			<h:outputText value="主题颜色："/>
+			<h:panelGrid columns="2" styleClass="Wid100">
+				<p:selectOneMenu styleClass="Fleft" value="#{paradiseTheme.configForm.siteMenuColor}">
+					<f:selectItem itemLabel="default" itemValue="default"/>
+					<f:selectItem itemLabel="blue" itemValue="blue"/>
+					<f:selectItem itemLabel="green" itemValue="green"/>
+					<f:selectItem itemLabel="turquoise" itemValue="turquoise"/>
+					<f:selectItem itemLabel="purple" itemValue="purple"/>
+					<f:selectItem itemLabel="orange" itemValue="orange"/>
+					<f:selectItem itemLabel="deep purple" itemValue="deeppurple"/>
+					<f:selectItem itemLabel="lime" itemValue="lime"/>
+					
+					<f:selectItem itemLabel="horizon" itemValue="horizon"/>
+					<f:selectItem itemLabel="bliss" itemValue="bliss"/>
+					<f:selectItem itemLabel="crimson" itemValue="crimson"/>
+					<f:selectItem itemLabel="disco" itemValue="disco"/>
+					<f:selectItem itemLabel="sunset" itemValue="sunset"/>
+					<f:selectItem itemLabel="deep sea" itemValue="deepsea"/>
+					<f:selectItem itemLabel="opa" itemValue="opa"/>
+					<f:selectItem itemLabel="cheer" itemValue="cheer"/>
+					<f:selectItem itemLabel="smoke" itemValue="smoke"/>
+				</p:selectOneMenu>
+				<p:selectOneMenu styleClass="Fleft" value="#{paradiseTheme.configForm.siteWidgetColor}">
+					<f:selectItem itemLabel="blue" itemValue=""/>
+					<f:selectItem itemLabel="green" itemValue="green"/>
+					<f:selectItem itemLabel="turquoise" itemValue="turquoise"/>
+					<f:selectItem itemLabel="purple" itemValue="purple"/>
+					<f:selectItem itemLabel="orange" itemValue="orange"/>
+					<f:selectItem itemLabel="deep purple" itemValue="deeppurple"/>
+					<f:selectItem itemLabel="lime" itemValue="lime"/>
+				</p:selectOneMenu>
+			</h:panelGrid>
+			<p:outputLabel for="minwidth" value="内容区最小宽度："/>
+			<p:inputText id="minwidth" value="#{paradiseTheme.configForm.contentMinWidth}" 
+						placeholder="例如: 1000px、100em，默认为 0px"/>
+		</h:panelGrid>
+		</p:fieldset>
+	</div>
+	
+	<div class="ui-g-12 ui-lg-6 ui-fluid">
+		<p:fieldset legend="后台选项" styleClass="AlignHeight">
+		<h:panelGrid columns="2" styleClass="Wid100" columnClasses="width8em">
+			<p:outputLabel for="headLogo2" value="头部图标地址："/>
+			<p:inputText id="headLogo2" value="#{paradiseTheme.configForm.adminHeadLogoUrl}"
+						placeholder="默认: 与前台头部图标相同"/>
+
+			<h:outputText value="菜单模式："/>
+			<h:panelGrid columns="2" styleClass="Wid100">
+				<p:selectOneButton value="#{paradiseTheme.configForm.adminMenuMode}">
+					<f:selectItem itemLabel="固定" itemValue="layout-menu-static"/>
+					<f:selectItem itemLabel="浮动" itemValue="layout-menu-overlay"/>
+					<f:selectItem itemLabel="侧边" itemValue="layout-menu-slim"/>
+				</p:selectOneButton>
+				<p:selectOneButton value="#{paradiseTheme.configForm.adminMenuLightness}">
+					<f:selectItem itemLabel="亮色" itemValue="layout-menu-bright"/>
+					<f:selectItem itemLabel="暗色" itemValue="layout-menu-dark"/>
+				</p:selectOneButton>
+			</h:panelGrid>
+			
+			<h:outputText value=""/>
+			<h:panelGrid columns="2" styleClass="Wid100">
+				<p:outputLabel value="菜单颜色"/>
+				<p:outputLabel value="控件颜色"/>
+			</h:panelGrid>
+			<h:outputText value="主题颜色："/>
+			<h:panelGrid columns="2" styleClass="Wid100">
+				<p:selectOneMenu styleClass="Fleft" value="#{paradiseTheme.configForm.adminMenuColor}">
+					<f:selectItem itemLabel="default" itemValue="default"/>
+					<f:selectItem itemLabel="blue" itemValue="blue"/>
+					<f:selectItem itemLabel="green" itemValue="green"/>
+					<f:selectItem itemLabel="turquoise" itemValue="turquoise"/>
+					<f:selectItem itemLabel="purple" itemValue="purple"/>
+					<f:selectItem itemLabel="orange" itemValue="orange"/>
+					<f:selectItem itemLabel="deep purple" itemValue="deeppurple"/>
+					<f:selectItem itemLabel="lime" itemValue="lime"/>
+					
+					<f:selectItem itemLabel="horizon" itemValue="horizon"/>
+					<f:selectItem itemLabel="bliss" itemValue="bliss"/>
+					<f:selectItem itemLabel="crimson" itemValue="crimson"/>
+					<f:selectItem itemLabel="disco" itemValue="disco"/>
+					<f:selectItem itemLabel="sunset" itemValue="sunset"/>
+					<f:selectItem itemLabel="deep sea" itemValue="deepsea"/>
+					<f:selectItem itemLabel="opa" itemValue="opa"/>
+					<f:selectItem itemLabel="cheer" itemValue="cheer"/>
+					<f:selectItem itemLabel="smoke" itemValue="smoke"/>
+				</p:selectOneMenu>
+				<p:selectOneMenu styleClass="Fleft" value="#{paradiseTheme.configForm.adminWidgetColor}">
+					<f:selectItem itemLabel="blue" itemValue=""/>
+					<f:selectItem itemLabel="green" itemValue="green"/>
+					<f:selectItem itemLabel="turquoise" itemValue="turquoise"/>
+					<f:selectItem itemLabel="purple" itemValue="purple"/>
+					<f:selectItem itemLabel="orange" itemValue="orange"/>
+					<f:selectItem itemLabel="deep purple" itemValue="deeppurple"/>
+					<f:selectItem itemLabel="lime" itemValue="lime"/>
+				</p:selectOneMenu>
+			</h:panelGrid>
+		</h:panelGrid>
+		<div class="Separator"/>
+		<p>当主题应用在后台时将使用上面的选项。</p>
+		</p:fieldset>
+	</div>
+	
+	<div class="ui-g-12 ui-lg-6 ui-fluid">
+		<p:fieldset legend="顶部标题区" styleClass="AlignHeight">
+			<h:panelGrid columns="2" styleClass="Wid100" columnClasses="width8em">
+				<h:outputText for="titlebar-type" value="标题区显示：" />
+		        <p:selectOneRadio id="titlebar-type" value="#{paradiseTheme.configForm.titleBarType}">
+		        	<f:selectItem itemLabel="空白" itemValue="#{null}" />
+		            <f:selectItem itemLabel="自定义标题" itemValue="title" />
+		        </p:selectOneRadio>
+				<p:outputLabel for="titlebar-title" value="自定义标题："/>
+				<p:inputText id="titlebar-title" value="#{paradiseTheme.configForm.titleBarValue}"
+						placeholder="默认: ＃{paradiseTheme.config.appTitle}"/>
+	        </h:panelGrid>
+	        <div class="Separator"/>
+			<h:panelGrid columns="2" styleClass="Wid100" columnClasses="width8em">
+				<p:outputLabel for="usernameexpr" value="用户名称："/>
+				<p:inputText id="usernameexpr" value="#{paradiseTheme.configForm.accountTitle}"
+						placeholder="默认: ＃{paradiseTheme.accountUsername}"/>
+				<p:outputLabel for="usericonexpr" value="用户图标："/>
+				<p:inputText id="usericonexpr" value="#{paradiseTheme.configForm.accountAvatar}"
+						placeholder="例如: /jresource/avatar/＃{paradiseTheme.accountFirstRole}.png"/>
+			</h:panelGrid>
+		</p:fieldset>
+	</div>
+	
+	<div class="ui-g-12 ui-lg-6 ui-fluid">
+		<p:fieldset legend="登录页面" styleClass="AlignHeight">
+			<h:panelGrid columns="2" styleClass="Wid100" columnClasses="width8em">
+				<p:outputLabel for="loginicon" value="图标地址："/>
+				<p:inputText id="loginicon" value="#{paradiseTheme.configForm.loginLogoUrl}"
+							placeholder="默认: 与前台头部图标相同"/>
+				<p:outputLabel for="helloTitle" value="欢迎标题："/>
+				<p:inputText id="helloTitle" value="#{paradiseTheme.configForm.welcomeTitle}" 
+					placeholder="默认: 欢迎使用 ＃{paradiseTheme.config.appTitle}"/>
+				<p:outputLabel for="getpwdlink" value="忘记密码连接："/>
+				<p:inputText id="getpwdlink" value="#{paradiseTheme.configForm.forgetPasswordUrl}"/>
+			</h:panelGrid>
+			<div class="Separator"/>
+			<p>登录页面为：<a href="#{request.contextPath}/paradise/login.xhtml" target="_blank">/paradise/login.xhtml</a></p>
+			<p>退出路径为：<a href="#">/jsfboot_logout</a></p>
+		</p:fieldset>
+	</div>
+	
+	<div class="ui-g-12">
+		<p:messages showSummary="false" showDetail="true" closable="true"/>
+		<div class="Wid100 TexAlCenter" style="padding:1em 0em;">
+			<p:commandButton value="保存" style="width:7em;margin-right:3em;"
+				actionListener="#{paradiseTheme.saveConfigForm}" ajax="false"/>
+			<p:commandLink value="重置" style="width:7em;"
+				actionListener="#{paradiseTheme.resetConfigForm}" ajax="false"/>
+		</div>
+	</div>
+	</h:form>
+	
+</f:subview>

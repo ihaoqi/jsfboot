@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+    
+    <name>jsfboot_dictionary</name>
+
+    <managed-bean>
+    	<managed-bean-name>adminDictionary</managed-bean-name>
+    	<managed-bean-class>com.easyeip.jsfboot.admin.dictionary.bean.AdminDictionaryBeanImpl</managed-bean-class>
+    	<managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+    	<description>供jsf界面使用的字典bean</description>
+    	<managed-bean-name>dictionaryBean</managed-bean-name>
+    	<managed-bean-class>com.easyeip.jsfboot.admin.dictionary.bean.DictionaryBeanImpl</managed-bean-class>
+    	<managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+</faces-config>

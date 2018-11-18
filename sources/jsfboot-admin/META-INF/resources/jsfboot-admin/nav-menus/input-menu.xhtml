@@ -1,0 +1,100 @@
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:tabView class="ClearBorder">
+		<p:tab title="模块页面">
+			<p:fragment autoUpdate="true">
+				<h:form>
+					<p:tree value="#{adminMenubar.moduleUserMenus}"
+						styleClass="ClearBorder" var="menu" selectionMode="checkbox"
+						dynamic="true" selection="#{adminMenubar.selectedModuleMenus}">
+						<p:treeNode type="default">
+							<h:outputText value="#{menu.title} - #{menu.name}"/>
+						</p:treeNode>
+
+						<p:treeNode type="menu">
+							<h:outputText value="#{menu.title} - #{menu.name}" />
+						</p:treeNode>
+					</p:tree>
+
+					<p:outputLabel value="暂无任何菜单可用。"
+						rendered="#{adminMenubar.moduleUserMenus.childCount == 0}">
+						<div class="EmptyBox20" />
+					</p:outputLabel>
+					<p:outputPanel styleClass="Wid100 TexAlCenter"
+						rendered="#{adminMenubar.moduleUserMenus.childCount > 0}">
+						<p:commandLink value=" 添加" update="menubar"
+							style="line-height:3em;" styleClass="fa fa-plus-circle"
+							actionListener="#{adminMenubar.addModuleMenu2MenuBar}">
+						</p:commandLink>
+				
+					</p:outputPanel>
+				</h:form>
+			</p:fragment>
+		</p:tab>
+		<p:tab title="菜单目录">
+			<p:fragment autoUpdate="true">
+				<h:form styleClass="ContainerIndent">
+					<h:panelGrid columns="1" width="100%">
+						<p:outputLabel value="菜单标题 (如 用户管理)：" for="folder_name" />
+						<p:inputText id="folder_name" required="true"
+							requiredMessage="菜单标题不能为空。"
+							value="#{adminMenubar.menuFolderForm.menuTitle}" />
+						<p:outputLabel value="菜单代码 (如 user-mgr)：" for="perm_name" />
+						<p:inputText id="perm_name" required="true"
+							requiredMessage="菜单代码不能为空。"
+							value="#{adminMenubar.menuFolderForm.permName}" />
+					</h:panelGrid>
+					<div class="Wid100 TexAlCenter">
+						<p:commandLink value=" 添加" update="growl,menubar"
+							style="line-height:3em;" styleClass="fa fa-plus-circle"
+							actionListener="#{adminMenubar.addEmptyMenuFolder}">
+						</p:commandLink>
+					</div>
+				</h:form>
+			</p:fragment>
+		</p:tab>
+		<p:tab title="自定义链接">
+			<p:fragment autoUpdate="true">
+				<h:form styleClass="ContainerIndent">
+					<h:panelGrid columns="1" width="100%">
+						<p:outputLabel value="菜单标题 (如 浏览报表)：" for="link_name" />
+						<p:inputText id="link_name" required="true"
+							requiredMessage="菜单标题不能为空。"
+							value="#{adminMenubar.customLinkForm.menuTitle}" />
+							
+						<p:outputLabel value="菜单代码 (如 view-report)：" for="link_title" />
+						<p:inputText id="link_title" required="true"
+							requiredMessage="菜单代码不能为空。"
+							value="#{adminMenubar.customLinkForm.permName}" />
+
+						<p:outputLabel value="打开方式：" for="new_ops" />
+						<p:selectOneRadio columns="2" id="new_ops" required="true"
+							requiredMessage="打开方式不能为空。"
+							value="#{adminMenubar.customLinkForm.target}">
+							<f:selectItem itemLabel="在当前页打开" itemValue="cur" />
+							<f:selectItem itemLabel="在新页面打开" itemValue="new" />
+						</p:selectOneRadio>
+						<p:message for="new_ops" showSummary="false" showDetail="true" />
+						<p:outputLabel value="链接地址：" for="link_url" />
+						<p:inputText id="link_url" required="true"
+							requiredMessage="链接地址不能为空。"
+							placeholder="例子：/jpn/admin 或 http://www.easyeip.com"
+							value="#{adminMenubar.customLinkForm.linkUrl}" />
+					</h:panelGrid>
+					<div class="Wid100 TexAlCenter">
+						<p:commandLink value=" 添加" update="growl,menubar"
+							style="line-height:3em;" styleClass="fa fa-plus-circle"
+							actionListener="#{adminMenubar.addUserCustomLink}">
+						</p:commandLink>
+					</div>
+					<div class="Separator"></div>
+					<span>标题与代码都为“separator”，并且链接地址为“#”时表示添加一条分割线，需要主题支持。</span>
+				</h:form>
+			</p:fragment>
+		</p:tab>
+	</p:tabView>
+</f:subview>

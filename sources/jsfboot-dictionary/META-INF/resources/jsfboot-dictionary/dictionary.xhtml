@@ -1,0 +1,108 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="数据字典" url="#" />
+		</p:breadCrumb>
+	</ui:define>
+	<ui:define name="content">
+		<p:growl id="growl" showDetail="true" showSummary="false" />
+		<div class="ui-lg-6 ui-g-12">
+			<h:form id="dictTable" styleClass="card ClearPadding AlignHeight">
+				<p:dataTable value="#{adminDictionary.dictList}" var="dict"
+					rowKey="#{dict.code}" rowIndexVar="index" style="height:100%;"
+					selectionMode="single" selection="#{adminDictionary.selDictItem}" 
+					emptyMessage="还没有任何字典。"
+					rows="10" paginator="true" paginatorAlwaysVisible="false"
+					rowsPerPageTemplate="10,20,30" paginatorPosition="bottom"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+					
+					<p:ajax event="rowSelect" update="dictDetail"
+						listener="#{adminDictionary.doSelectDictItem}" />
+						
+					<f:facet name="header">
+						<div class="Fleft">字典列表</div>
+						<div class="ClearBoth"/>
+					</f:facet>
+
+					<p:column headerText="#" style="width:1em;">
+						<h:outputText value="#{index+1}" />
+					</p:column>
+					<p:column headerText="代码">
+						<h:outputText value="#{dict.code}" />
+					</p:column>
+					<p:column headerText="标题">
+						<h:outputText value="#{dict.title}" />
+					</p:column>
+					<p:column headerText="分类">
+						<h:outputText value="#{dict.catalog}" />
+					</p:column>
+
+					<p:column headerText="类型" style="width:4em;text-align:center">
+						<h:outputText value="#{dict.type}/#{dict.size}" />
+					</p:column>
+
+					<p:column headerText="操作" style="width:3em;text-align:center">
+						<p:commandLink styleClass="fa fa-trash-o"
+							actionListener="#{adminDictionary.beginDelDictItem}"
+							update="dictTable,dictDetail">
+							<f:attribute name="dict" value="#{dict}" />
+						</p:commandLink>
+					</p:column>
+
+					<f:facet name="footer">
+						<p:commandLink value=" 添加字典" update="dictDetail"
+							styleClass="Fright fa fa-plus-circle" style="margin:5px;"
+							actionListener="#{adminDictionary.beginAddDictItem}" />
+						<div class="clearfix" />
+					</f:facet>
+				</p:dataTable>
+			</h:form>
+		</div>
+
+		<div class="ui-lg-6 ui-g-12">
+			<p:panel id="dictDetail" styleClass="AlignHeight">
+				<f:facet name="header">
+					<h:outputText value="提示"
+						rendered="#{adminDictionary.operPanel=='userTip'}" />
+					<h:outputText value="添加字典"
+						rendered="#{adminDictionary.operPanel=='addDict'}" />
+					<h:outputText value="#{adminDictionary.selDictItem.title}"
+						rendered="#{adminDictionary.operPanel=='delDict'}" />
+					<h:outputText value="#{adminDictionary.selDictItem.title}"
+						rendered="#{adminDictionary.operPanel=='editDict'}" />
+				</f:facet>
+
+				<h:form>
+					<ui:include src="fragment/#{adminDictionary.operPanel}.xhtml">
+						<ui:param name="dict" value="#{adminDictionary.selDictItem}" />
+					</ui:include>
+				</h:form>
+			</p:panel>
+		</div>
+
+		<div class="ui-g-12">
+			<div class="card">
+				<span class="Fs12 gray fa fa-warning">
+					字典用于保存系统中经常使用的一些较为固定的数据，如：是否、男女、类别、级别等； 更多信息可查看
+					<p:link outcome="#{adminHelpView.helpOutcome}" value="帮助文档" target="_blank">
+						<f:param name="page" value="/jsfboot-dictionary"/>
+					</p:link>。</span>
+			</div>
+		</div>
+		
+		<p:dialog widgetVar="saveStatus" modal="true" closable="false">
+			<div class="TexAlCenter">
+				<i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+				<p>正在保存，请稍后...</p>
+			</div>
+		</p:dialog>
+	</ui:define>
+
+</ui:composition>

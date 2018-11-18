@@ -1,0 +1,53 @@
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+			xmlns:h="http://java.sun.com/jsf/html"
+			xmlns:f="http://java.sun.com/jsf/core"
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+			xmlns:p="http://primefaces.org/ui">
+
+	<div class="EmptyBox10"/>
+
+	<p:panelGrid columns="1" styleClass="Wid100" style="margin-top:-5px;">
+		<p:panelGrid>
+			<p:outputLabel value="名称：#{item.name}" styleClass="MarRight20"/>
+			<p:commandLink value=" 修改" styleClass="MarRight10 fa fa-edit" update="#{detailPanel}"
+							actionListener="#{adminRegistry.beginEditRegistryItem}"/>
+			<p:commandLink value=" 删除" update="#{detailPanel}" styleClass="MarRight10 fa fa-trash-o"
+							actionListener="#{adminRegistry.beginDelRegistryItem}"/>
+							
+			<p:commandLink value=" 添加值" styleClass="fa fa-plus-circle" update="#{detailPanel}"
+							actionListener="#{adminRegistry.beginAddItemAttr}"/>
+		</p:panelGrid>
+		<p:outputLabel id="item_comment" value="备注：#{item.comment}" rendered="#{item.comment != ''}"/>
+	</p:panelGrid>
+	<div class="EmptyBox5"/>
+	<p:dataTable resizableColumns="true" emptyMessage="该项还没有任何值。"
+			 	value="#{adminRegistry.registryItemAttrs}" rowKey="#{attr.name}" var="attr" rowIndexVar="idx"
+				paginator="true" rows="15" paginatorPosition="bottom" paginatorAlwaysVisible="false">
+		<p:column headerText="序号" style="width:2em;text-align:center">
+			<h:outputText value="#{idx+1}"/>
+		</p:column>
+		<p:column headerText="名称" styleClass="Wid40">
+			<h:outputText value="#{attr.name}" rendered="#{attr.name != null}"/>
+			<h:outputText value="(缺省值)" rendered="#{attr.name == null}" styleClass="Gray"/>
+		</p:column>
+		<p:column headerText="值" styleClass="Wid60">
+			<h:outputText value="#{attr.value}"/>
+		</p:column>
+		<p:column headerText="操作" width="4em;">
+			<p:commandLink title="修改" styleClass="Fs16 fa fa-edit MarRight10"
+				actionListener="#{adminRegistry.beginEditItemAttr}" update="#{detailPanel}">
+					<f:attribute name="attr" value="#{attr}"/>
+			</p:commandLink>
+			<p:commandLink title="删除" styleClass="Fs16 fa fa-close" rendered="#{attr.name != null}"
+				actionListener="#{adminRegistry.doDelItemAttr}" update="#{detailPanel}">
+				<f:attribute name="attr" value="#{attr}"/>
+			</p:commandLink>
+		</p:column>
+		<f:facet name="footer">
+			<div class="Fleft" style="font-weight:normal;">
+			注：如果名称或值显示不全可用鼠标调整列宽。
+			</div>
+			<div class="ClearBoth"/>
+		</f:facet>
+	</p:dataTable>
+</f:subview>

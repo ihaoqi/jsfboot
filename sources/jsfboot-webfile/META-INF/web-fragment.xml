@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-fragment version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-fragment_3_0.xsd">
+
+	<!-- 定义文件上传使用commons-fileupload.jar -->
+	<context-param>
+		<param-name>primefaces.UPLOADER</param-name>
+		<param-value>commons</param-value>
+	</context-param>
+	
+    <filter>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <filter-class>com.easyeip.jsfboot.webfile.web.WebfileUploadFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <servlet-name>jsfbootPageNavigator</servlet-name>
+    </filter-mapping>
+    
+	<!-- 文件浏览 -->
+	<servlet>
+		<servlet-name>webfile-resource</servlet-name>
+		<servlet-class>com.easyeip.jsfboot.webfile.web.WebfileResourceServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>webfile-resource</servlet-name>
+		<url-pattern>/jresource/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 文件下载 -->
+	<servlet>
+		<servlet-name>webfile-download</servlet-name>
+		<servlet-class>com.easyeip.jsfboot.webfile.web.WebfileDownloadServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>webfile-download</servlet-name>
+		<url-pattern>/jdownload/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 自定义文件路径过滤器 -->
+	<filter>
+		<filter-name>webfile-custompath</filter-name>
+		<filter-class>com.easyeip.jsfboot.webfile.web.WebfileCustomPathFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>webfile-custompath</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+</web-fragment>

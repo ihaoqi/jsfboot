@@ -1,0 +1,19 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="#{jsfbootTheme.template.content}">
+
+	<ui:define name="content">
+		<div class="ui-g-12">
+			<div class="card TexAlCenter">
+				<div style="margin:0 auto;width:30em;padding:8em 0em;">
+					<h2 style="color:red;">警告：请先确认您有后台管理的访问权限？</h2>
+					<br/>
+					<p>返回 <A href="#{request.contextPath}" style="font-weight: bold;">首页</A></p>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+	
+</ui:composition>

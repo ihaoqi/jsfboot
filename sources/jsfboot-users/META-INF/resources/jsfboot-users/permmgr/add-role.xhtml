@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="权限配置" outcome="../permmgr" />
+			<p:menuitem value="角色管理" outcome="../rolemgr"/>
+			<p:menuitem value="#{registryUserRole.addRoleForm.registryItem==null?'添加':'修改'}角色" url="#"/>
+		</p:breadCrumb>
+	</ui:define>
+	<ui:define name="content">
+		<h:form class="ui-g-12 ui-lg-6">
+			<p:panel header="#{registryUserRole.addRoleForm.registryItem==null?'添加':'修改'}角色" styleClass="card AlignHeight">
+				<h:panelGrid columns="2" styleClass="ui-fluid Wid100">
+					<h:outputLabel value="角色标题" for="title"/>
+					<p:inputText id="title" placeholder="中文标题，如：部门经理"
+								value="#{registryUserRole.addRoleForm.title}"
+								required="true" requiredMessage="标题不能为空。"/>
+					<h:outputLabel value="角色代码" for="name"/>
+					<p:inputText id="name" placeholder="英文代码，如：BMJL"
+								value="#{registryUserRole.addRoleForm.code}"
+								disabled="#{registryUserRole.addRoleForm.registryItem==null?false:true}"
+								required="true" requiredMessage="代码不能为空。"/>
+
+					<h:outputLabel value="角色说明" for="explain"/>
+					<p:inputTextarea id="explain" rows="2"
+								value="#{registryUserRole.addRoleForm.explain}"/>
+				</h:panelGrid>
+				
+				<div class="Separator"/>
+				<div class="TexAlCenter">
+					<p:commandButton value="确定" action="#{registryUserRole.endAddRole}" 
+						style="width:7em;margin-right:1em;" ajax="false"
+						rendered="#{registryUserRole.addRoleForm.registryItem==null}">
+					</p:commandButton>
+					<p:commandButton value="确定" action="#{registryUserRole.endEditRole}" 
+						style="width:7em;margin-right:1em;" ajax="false"
+						rendered="#{registryUserRole.addRoleForm.registryItem!=null}">
+					</p:commandButton>
+					
+		       		<p:commandButton value="取消" ajax="false" immediate="true" 
+		       						action="../rolemgr" style="width:7em;">
+		       		</p:commandButton>
+				</div>
+			</p:panel>
+		</h:form>
+		<div class="ui-g-12 ui-lg-6">
+			<div class="card ui-fluid AlignHeight">
+				<p:messages closable="true" showSummary="false" showDetail="true"/>
+				<p class="fa fa-bell-o" style="border-bottom:solid #888 2px;line-height:1.5em;padding:0px 2px;"> 说明</p>
+				<ol>
+					<li>英文代码不能与已有的角色代码同名，并且保存后不能更改；</li>
+				</ol>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

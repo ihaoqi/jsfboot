@@ -1,0 +1,64 @@
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+			xmlns:h="http://java.sun.com/jsf/html"
+			xmlns:f="http://java.sun.com/jsf/core"
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+			xmlns:p="http://primefaces.org/ui">
+
+<div class="ui-fluid">
+	<p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+		<p:inputText value="#{adminDictionary.editDictForm.code}" disabled="true"/>
+		<p:inputText value="#{adminDictionary.editDictForm.title}"
+			placeholder="标题*" required="true" requiredMessage="标题不能为空。"/>
+		<p:inputText value="#{adminDictionary.editDictForm.catalog}" placeholder="分类"/>
+		<p:panel header="内容(CVS格式)" styleClass="ClearPadding">
+			<p:inputTextarea value="#{adminDictionary.editDictForm.content}" rows="12"
+				autoResize="false">
+			</p:inputTextarea>
+		</p:panel>
+		<p:messages showDetail="true" showSummary="false" closable="true"/>
+		<h:panelGroup>
+			<div class="TexAlCenter" style="padding-top:5px;padding-bottom:5px;">
+				<p:commandLink value="保存" update="dictTable,dictDetail"
+					style="width:8em;margin-right:2em;" global="false"
+					onstart="PF('saveStatus').show()" oncomplete="PF('saveStatus').hide()"
+					actionListener="#{adminDictionary.doUpdateDictItem}"/>
+				
+				<p:commandLink value="浏览" oncomplete="PF('previewDlg').show();" update="previewDlg"/>
+			</div>
+			<div class="EmptyBox10"/>
+		</h:panelGroup>
+		
+		<p:dialog id="previewDlg" modal="true" widgetVar="previewDlg" width="500" height="300"
+					header="#{adminDictionary.editDictForm.title}" dynamic="true">
+			<p:dataList value="#{adminDictionary.editDictForm.listValue}" rowIndexVar="index"
+						var="val" type="ordered" emptyMessage="没有内容可预览。" styleClass="ClearBorder"
+						rendered="#{adminDictionary.editDictForm.type=='List'}">
+				#{val}
+			</p:dataList>
+			<p:dataList value="#{adminDictionary.editDictForm.mapValue}" rowIndexVar="index"
+						var="val" type="ordered" emptyMessage="没有内容可预览。" styleClass="ClearBorder"
+						rendered="#{adminDictionary.editDictForm.type=='Map'}">
+		        <h:outputText value="#{val.key}" styleClass="Purple"/> - #{val.value}
+			</p:dataList>
+			<p:dataTable value="#{adminDictionary.editDictForm.tableRecords}" rowIndexVar="index"
+						var="val" emptyMessage="没有内容可预览。" reflow="true" resizableColumns="true"
+						rendered="#{adminDictionary.editDictForm.type=='Table'}">
+				<p:columns value="#{adminDictionary.editDictForm.tableFields}" var="col">
+					<f:facet name="header">
+		                <h:outputText value="#{col.name}" title="#{col.title}"/>
+		            </f:facet>
+					<h:outputText value="#{val[col.name]}"/>
+				</p:columns>
+			</p:dataTable>
+			<f:facet name="footer">
+				<div class="Fright">
+	               	<p:commandButton value="关闭" style="width:6em;"
+	               		type="button" onclick="PF('previewDlg').hide();"/>
+                </div>
+                <div class="ClearBoth"/>
+            </f:facet>
+		</p:dialog>
+
+	</p:panelGrid>
+</div>
+</f:subview>

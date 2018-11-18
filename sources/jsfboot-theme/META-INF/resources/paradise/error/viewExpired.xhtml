@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="content">
+		<div class="ui-g-12">
+			<div class="card">
+				<span style="color:#fca752;font-size:18px;">发生异常</span>
+			</div>
+			<div class="card">
+				<p style="word-wrap:break-word">#{pfExceptionHandler.pageUrl} 页面已过期。</p>
+				
+				<p:button value="返回首页" styleClass="blue-btn" href="/jpn" icon="fa fa-home" style="margin-right:1em;"/>
+	          	<p:button value="重新加载" href="#{pfExceptionHandler.pageUrl}" icon="fa fa-repeat"
+	          		rendered="#{pfExceptionHandler.pageUrl != null}"/>
+				
+			</div>
+		</div>
+	</ui:define>
+
+</ui:composition>

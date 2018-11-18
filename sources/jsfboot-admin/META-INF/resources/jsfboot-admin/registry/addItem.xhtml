@@ -1,0 +1,29 @@
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+			xmlns:h="http://java.sun.com/jsf/html"
+			xmlns:f="http://java.sun.com/jsf/core"
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+			xmlns:p="http://primefaces.org/ui">
+
+	<div class="ui-fluid">
+		<p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+			<p:panelGrid>
+			<h2 class="Fs18">在 #{item == null?'根结点':item.name} 下添加子项：</h2>
+			</p:panelGrid>
+			<p:inputText id="item_name" value="#{adminRegistry.registryItemFrom.name}"
+				placeholder="名称*" required="true" requiredMessage="名称不能为空。"
+				maxlength="#{adminRegistry.regProfile.maxNameLength}"/>
+	        <p:inputTextarea rows="3" value="#{adminRegistry.registryItemFrom.comment}" placeholder="备注"
+	        	maxlength="#{adminRegistry.regProfile.maxCommentLength}"/>
+	        <p:messages showDetail="true" showSummary="false" closable="true"/>
+		</p:panelGrid>
+		
+		<h:panelGrid columns="2" style="margin:1em;">
+			<p:commandButton value="确定" update="#{tablePanel},#{detailPanel}"
+						actionListener="#{adminRegistry.endAddRegistryItem}"/>
+		
+			<p:commandButton value="取消" update="#{detailPanel}" immediate="true"
+						actionListener="#{adminRegistry.toRegistryItemView}" />
+		</h:panelGrid>
+	</div>
+
+</f:subview>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+	</f:facet>
+	<title><ui:insert name="title">#{paradiseTheme.config.appTitle}</ui:insert></title>
+	<link rel="shortcut icon" href="#{request.contextPath}/favicon.ico"/>
+	
+	<h:outputScript name="layout/js/nanoscroller.js" library="paradise" />
+	<h:outputScript name="layout/js/layout.js" library="paradise" />
+	<style type="text/css">
+		body .ui-breadcrumb{
+			border:0px !important;
+			font-weight:normal;
+		}
+		body .ui-breadcrumb ul li.ui-breadcrumb-chevron{
+			font-size:11px !important;
+		}
+		
+		.content-minwidth{
+			min-width:#{paradiseTheme.config.contentMinWidth};
+		}
+		
+		.ui-g {
+			-webkit-flex-wrap:wrap;
+		}
+	</style>
+	<ui:insert name="head" />
+</h:head>
+
+<h:body styleClass="content-minwidth">
+	<div class="layout-wrapper #{jsfbootTheme.pageDomain=='Admin'?paradiseTheme.config.adminMenuMode:paradiseTheme.config.siteMenuMode}">
+		<ui:include src="./topbar.xhtml" />
+
+		<div class="layout-main">
+			<ui:include src="./menu.xhtml" />
+
+			<div class="layout-content">
+				<div class="breadcrumb" style="margin:-8px -8px 0.5em -8px;">
+					<ui:insert name="breadcrumb" />
+				</div>
+
+				<div class="ui-g">
+					<ui:insert name="content" />
+				</div>
+			</div>
+
+			<ui:include src="./footer.xhtml" />
+		</div>
+	</div>
+	
+    <p:ajaxExceptionHandler type="javax.faces.application.ViewExpiredException"
+                            onexception="PF('viewExpiredDialog').show();" />
+                            
+     <p:dialog id="viewExpiredDialog" header="发生异常" widgetVar="viewExpiredDialog"
+              height="140px">
+              <br/>
+        	当前页面已过期，请重新加载！<br/><br/><br/>
+        <p:button onclick="document.location.href = document.location.href;"
+        		value="重新加载" icon="fa fa-repeat"/>
+    </p:dialog>
+
+	<p:ajaxStatus
+		style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
+		<f:facet name="start">
+			<i class="fa fa-circle-o-notch fa-spin ajax-loader"
+				aria-hidden="true"></i>
+		</f:facet>
+
+		<f:facet name="complete">
+			<h:outputText value="" />
+		</f:facet>
+	</p:ajaxStatus>
+
+	<h:outputStylesheet name="layout/css/nanoscroller.css" library="paradise" />
+	<h:outputStylesheet name="layout/css/animate.css" library="paradise" />
+	<h:outputStylesheet library="paradise"
+		name="layout/css/layout-#{jsfbootTheme.pageDomain=='Admin'?paradiseTheme.config.adminMenuColor:paradiseTheme.config.siteMenuColor}.css" />
+	<h:outputStylesheet name="layout/css/core-layout.css" library="paradise" />
+</h:body>
+
+</html>

@@ -1,0 +1,47 @@
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+			xmlns:h="http://java.sun.com/jsf/html"
+			xmlns:f="http://java.sun.com/jsf/core"
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+			xmlns:p="http://primefaces.org/ui">
+
+	<h:form>
+	<p:dataTable var="module" value="#{adminConsole.runModuleList}"
+				rowIndexVar="rowId" emptyMessage="一个模块都没有。"
+				paginator="true" paginatorPosition="bottom" rows="15" paginatorAlwaysVisible="false">
+		<p:column headerText="序号" width="4em;">
+			<h:outputText value="#{rowId+1}" />
+		</p:column>
+		<p:column headerText="名称" priority="4">
+			<h:outputText value="#{module.row.moduleInfo.moduleName}" />
+		</p:column>
+		<p:column headerText="标题">
+			<h:outputText value="#{module.row.moduleInfo.moduleTitle}" />
+		</p:column>
+		<p:column headerText="版本" width="7em;" priority="4">
+			<h:outputText value="#{module.row.moduleInfo.moduleVersion}" />
+		</p:column>
+		<p:column headerText="内容标记" priority="6" width="7em;">
+			<p:outputLabel styleClass="fa fa-file-zip-o #{module.inJarFile?'Red':'Gray'} MarL10" title="JAR文件"/><p:spacer width="5"/>
+			<p:outputLabel styleClass="fa fa-navicon #{module.haveMenuBar?'Red':'Gray'}" title="内置菜单"/><p:spacer width="5"/>
+			<p:outputLabel styleClass="fa fa-heartbeat #{module.haveService?'Red':'Gray'}" title="内置服务"/><p:spacer width="5"/>
+			<p:outputLabel styleClass="fa fa-image #{module.haveTheme?'Red':'Gray'}" title="内置主题"/><p:spacer width="5"/>
+			<p:outputLabel styleClass="fa fa-user #{module.haveUserAdaptive?'Red':'Gray'}" title="内置用户适配器"/>
+		</p:column> 
+		<p:column headerText="开发商" priority="6"> 
+			<h:outputText value="#{module.row.moduleInfo.companyName}" />
+		</p:column>
+		<p:column headerText="操作" width="7em;">
+			<p:commandLink value="详情" action="console/module_info"
+				ajax="false" immediate="true" styleClass="MarRight10">
+				<f:param name="moduleName" value="#{module.row.name}"/>
+			</p:commandLink>
+			
+			<p:commandLink value="配置" rendered="#{module.confpage!=null}"
+				ajax="false" immediate="true" action="console/module_conf">
+				<f:param name="moduleName" value="#{module.row.name}"/>
+			</p:commandLink>
+		</p:column>
+	</p:dataTable>
+	</h:form>
+
+</f:subview>

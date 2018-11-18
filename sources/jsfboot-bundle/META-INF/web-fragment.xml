@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-fragment version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-fragment_3_0.xsd">
+
+	<!-- 定义首页文件名 -->
+	<welcome-file-list>
+		<welcome-file>jsfboot-default.xhtml</welcome-file>
+	</welcome-file-list>
+	
+	<context-param>
+		<description>jsf页面资源查询</description>
+		<param-name>javax.faces.FACELETS_RESOURCE_RESOLVER</param-name>
+		<param-value>com.easyeip.jsfboot.web.faces.DebugResourceResolver</param-value>
+	</context-param>
+
+	<!-- primefaces param -->
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>#{jsfbootTheme.primefacesTheme}</param-value>
+	</context-param>
+	
+	<context-param>
+		<description>启用FONT_AWESOME字体</description>
+		<param-name>primefaces.FONT_AWESOME</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
+	<!-- 没有使用jsfboot主题时使用的primefaces主题 -->
+	<context-param>
+		<param-name>jsfboot-primefaces.THEME</param-name>
+		<param-value>omega</param-value>
+	</context-param>
+	
+	<context-param>
+		<description>用.xhtml代替.jsp默认后缀</description>
+		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+		<param-value>.xhtml</param-value>
+	</context-param>
+
+	<!-- 启动jsfboot -->
+	<listener>
+		<description>jsfboot启动器</description>
+		<listener-class>com.easyeip.jsfboot.core.JsfbootInitListener</listener-class>
+	</listener>
+	
+	<!-- 菜单页面导航 -->
+	<servlet>
+		<servlet-name>jsfbootPageNavigator</servlet-name>
+		<servlet-class>com.easyeip.jsfboot.web.JsfbootPageNavigator</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>jsfbootPageNavigator</servlet-name>
+		<url-pattern>/jpn/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>jsfbootPageNavigator</servlet-name>
+		<url-pattern>/jsfboot-default.xhtml</url-pattern>
+	</servlet-mapping>
+</web-fragment>

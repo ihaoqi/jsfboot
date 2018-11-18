@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+    
+    <name>jsfboot_bundle</name>
+    
+    <managed-bean>
+    	<managed-bean-name>jsfbootConfig</managed-bean-name>
+    	<managed-bean-class>com.easyeip.jsfboot.core.beans.impl.JsfbootConfigBeanImpl</managed-bean-class>
+    	<managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+    	<managed-bean-name>jsfbootTheme</managed-bean-name>
+    	<managed-bean-class>com.easyeip.jsfboot.core.beans.impl.JsfbootThemeBeanImpl</managed-bean-class>
+    	<managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+	<application>
+		<view-handler>com.easyeip.jsfboot.web.faces.PageNavigatorHandler</view-handler>
+		<el-resolver>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerELResolver</el-resolver>
+		<resource-handler>com.easyeip.jsfboot.web.faces.DebugResourceHandler</resource-handler>
+	</application>
+	<factory>
+		<exception-handler-factory>com.easyeip.jsfboot.web.faces.JsfbootExceptionHandlerFactory</exception-handler-factory>
+	</factory>
+</faces-config>

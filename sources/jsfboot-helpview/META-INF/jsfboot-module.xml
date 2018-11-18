@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsfboot-module xmlns="http://jsfboot.easyeip.com/jsfboot-module"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jsfboot.easyeip.com/jsfboot-module http://www.easyeip.com/schema/jsfboot/jsfboot-module-1.0.xsd"
+	load-on-startup="-99">
+	
+	<module-version>
+		<module-name>jsfboot-helpview</module-name>
+		<module-title>jsfboot帮助页面浏览</module-title>
+		<module-version>1.0.0</module-version>
+		<company-name>www.easyeip.com</company-name>
+		<company-description>瑞宝软件</company-description>
+	</module-version>
+	
+	<define-service>
+	
+		<service name="com.easyeip.jsfboot.admin.AdminHelpViewService"
+				class="com.easyeip.jsfboot.admin.help.impl.AdminHelpViewServiceImpl"
+				explain="admin帮助浏览服务">
+		</service>
+	
+	</define-service>
+	
+	<page-resource>
+		<public-pages>/help.xhtml</public-pages>
+	</page-resource>
+
+</jsfboot-module>

@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="系统帐号" outcome="../usermgr"/>
+			<p:menuitem value="分组管理" outcome="../groupmgr"/>
+			<p:menuitem value="#{registryUserGroup.addGroupForm.id==null?'添加':'修改'}分组" url="#"/>
+		</p:breadCrumb>
+	</ui:define>
+	<ui:define name="content">
+		<h:form class="ui-g-12 ui-lg-6">
+			<p:panel header="#{registryUserGroup.addGroupForm.id==null?'添加':'修改'}分组" styleClass="card AlignHeight">
+				<h:panelGrid columns="2" styleClass="ui-fluid Wid100">
+					<h:outputLabel value="分组标题" for="title"/>
+					<p:inputText id="title" placeholder="中文标题，如：产品研发部"
+								value="#{registryUserGroup.addGroupForm.title}"
+								required="true" requiredMessage="标题不能为空。"/>
+					<h:outputLabel value="分组代码" for="name"/>
+					<p:inputText id="name" placeholder="英文代码，如：CPYFB"
+								value="#{registryUserGroup.addGroupForm.code}"
+								disabled="#{registryUserGroup.addGroupForm.id==null?false:true}"
+								required="true" requiredMessage="代码不能为空。"/>
+					
+					<h:outputText value="分组状态"/>
+					<p:inputSwitch onLabel="启用" offLabel="停用" value="#{registryUserGroup.addGroupForm.enabled}"/>
+								
+					<h:outputLabel value="分组说明" for="explain"/>
+					<p:inputTextarea id="explain" rows="2"
+								value="#{registryUserGroup.addGroupForm.explain}"/>
+				</h:panelGrid>
+				
+				<div class="Separator"/>
+				<div class="TexAlCenter">
+					<p:commandButton value="确定" action="#{registryUserGroup.endAddGroup}" 
+						style="width:7em;margin-right:1em;" ajax="false"
+						rendered="#{registryUserGroup.addGroupForm.id==null}">
+					</p:commandButton>
+					<p:commandButton value="确定" action="#{registryUserGroup.endEditGroup}" 
+						style="width:7em;margin-right:1em;" ajax="false"
+						rendered="#{registryUserGroup.addGroupForm.id!=null}">
+					</p:commandButton>
+					
+		       		<p:commandButton value="取消" ajax="false" immediate="true" 
+		       						action="../groupmgr" style="width:7em;">
+		       		</p:commandButton>
+				</div>
+			</p:panel>
+		</h:form>
+		<div class="ui-g-12 ui-lg-6">
+			<div class="card ui-fluid AlignHeight">
+				<p:messages closable="true" showSummary="false" showDetail="true"/>
+				<p class="fa fa-bell-o" style="border-bottom:solid #888 2px;line-height:1.5em;padding:0px 2px;"> 说明</p>
+				<ol>
+					<li>英文代码不能与已有的分组代码同名，并且保存后不能更改；</li>
+				</ol>
+			</div>
+		</div>
+	</ui:define>
+
+</ui:composition>

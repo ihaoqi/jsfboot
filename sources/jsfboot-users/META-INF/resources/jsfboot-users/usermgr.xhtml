@@ -1,0 +1,130 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="系统账号" url="#" />
+		</p:breadCrumb>
+	</ui:define>
+	<ui:define name="content">
+		<h:outputScript name="utils/faces-utils.js" library="jsfboot-bundle" />
+		
+		<div class="ui-g-12">
+			<h:form id="userForm" class="card">
+				<div>
+					<div class="Fleft">
+						<p:commandButton value="添加用户" action="usermgr/add-user"
+										ajax="false" icon="fa fa-plus-circle" styleClass="MarRight5">
+						</p:commandButton>
+						<p:commandButton value="分组管理" action="groupmgr" ajax="false" icon="fa fa-sitemap">
+						</p:commandButton>
+					</div>
+					<div class="ClearBoth" />
+					<div class="Separator" />
+				</div>
+
+				<p:dataTable id="userList" value="#{registryUserGroup.userList}" var="acc" 
+								rowIndexVar="row" emptyMessage="还没有任何账号。"
+								paginator="true" paginatorPosition="bottom" rows="15" paginatorAlwaysVisible="false">
+					<p:column headerText="#" width="2em;">
+						#{row+1}
+					</p:column>
+					<p:column headerText="归属分组">
+						<h:outputText value="#{acc.groupInfo}" rendered="#{!acc.groupInfo.exist}"
+							style="text-decoration:line-through;" styleClass="SoftRed" title="分组不存在"/>
+						<h:outputText value="#{acc.groupInfo}" rendered="#{acc.groupInfo.exist}"
+							styleClass="#{acc.groupInfo.disabled?'SoftRed':''}"
+							title="#{acc.groupInfo.disabled?'分组已停用':''}"/>
+					</p:column>
+					<p:column headerText="登录名">
+						#{acc.loginId}
+					</p:column>
+					<p:column headerText="姓名">
+						#{acc.userName}
+					</p:column>
+					<p:column headerText="角色">
+						<ui:repeat var="r" value="#{acc.roleList}">
+							<h:outputText value="#{r.title}" style="white-space:nowrap;" styleClass="MarRight10"/>
+						</ui:repeat>
+					</p:column>
+					<p:column headerText="账号标记" width="5em;" styleClass="TexAlCenter">
+						<p:outputLabel styleClass="fa fa-lock #{acc.enabled?'BoldGray':'Red'} MarRight10"
+										title="#{acc.enabled?'账号有效':'账号已禁用'}"/>
+						<p:outputLabel styleClass="fa fa-key #{acc.passwordExpired?'Red':'BoldGray'}"
+										title="#{acc.passwordExpired?'密码已过期':'密码有效'}"/>
+					</p:column>
+					
+					<p:column headerText="操作" width="13em;" toggleable="false">
+						<p:commandLink value=" 修改" action="usermgr/add-user"
+							styleClass="fa fa-edit MarRight10" ajax="false">
+							<f:param name="user" value="#{acc.id}"/>
+						</p:commandLink>
+						
+						<p:commandLink value=" 改密码" oncomplete="PF('editPasswordDlg').show();"
+										actionListener="#{registryUserGroup.beginEditPassword}"
+										update="editPasswordForm" styleClass="fa fa-key MarRight10">
+							<f:attribute name="user" value="#{acc}"/>
+						</p:commandLink>
+						
+						<p:commandLink value=" 删除" styleClass="fa fa-trash-o" ajax="false"
+							actionListener="#{registryUserGroup.delAccountUser}">
+							<f:attribute name="user" value="#{acc}"/>
+							<p:confirm header="删除数据源" icon="ui-icon-alert"
+								message="您确定要删除 #{acc.userName} 吗？删除后将不可恢复。"/>
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</div>
+		
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+	        <p:commandButton value="确定" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+	        <p:commandButton value="取消" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+	    </p:confirmDialog>
+	    
+		<h:form id="editPasswordForm">
+		    <p:dialog header="修改密码" id="editPasswordDlg" widgetVar="editPasswordDlg" width="350" height="180" modal="true">
+		    
+				<h:panelGrid columns="2" styleClass="Wid100 ui-fluid">
+					<h:outputText value="系统账号"/>
+					<h:outputText value="#{registryUserGroup.editPasswordForm.accountEntry.loginId} (#{registryUserGroup.editPasswordForm.accountEntry.userName})"/>
+
+					<h:outputLabel value="新的密码" for="password1"/>
+					<p:password id="password1" value="#{registryUserGroup.editPasswordForm.newPassword1}"
+								placeholder="不能少于6个字符" feedback="true" 
+								promptLabel="输入密码" weakLabel="强度：弱" label="登录密码"
+                    			goodLabel="强度：好" strongLabel="强度：非常好"
+								required="true" requiredMessage="新的密码不能为空。">
+						<f:validateLength minimum="6" maximum="100"/>
+					</p:password>
+					
+					<h:outputLabel value="再输一次" for="password2"/>
+					<p:password id="password2" value="#{registryUserGroup.editPasswordForm.newPassword2}"
+								required="true" requiredMessage="再输一次登录密码。">
+					</p:password>
+
+				</h:panelGrid>
+
+	   			<p:messages id="editMsgs" showSummary="false" showDetail="true" closable="true"/>
+	
+				<f:facet name="footer">
+					<div class="Fright">
+		               	<p:commandButton value="确定" style="width:6em;margin-right:1em;"
+		               		actionListener="#{registryUserGroup.endEditPassword}"
+		               		update="editMsgs,:userForm:userList"
+		               		oncomplete="completeCloseDialog('editPasswordDlg',xhr,status,args);"/>
+		               	<p:commandButton value="取消" style="width:6em;"
+		               		onclick="PF('editPasswordDlg').hide();"/>
+		         	</div>
+		            <div class="ClearBoth"/>
+		        </f:facet>
+		    </p:dialog>
+	    </h:form>
+	</ui:define>
+
+</ui:composition>

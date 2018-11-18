@@ -1,0 +1,124 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="系统信息" url="#" />
+		</p:breadCrumb>
+	</ui:define>
+	<ui:define name="content">
+
+		<div class="ui-g-12 ui-lg-6">
+			<p:panel header="产品信息" style="height:100%;">
+				<h:panelGrid columns="2" styleClass="Wid100" columnClasses="Wid30,Wid70">
+					<p:outputLabel value="产品名称：" />
+					<p:outputLabel value="#{jsfbootConfig.appVersion.productName}" />
+					<p:outputLabel value="产品标题：" />
+					<p:outputLabel value="#{jsfbootConfig.appVersion.productTitle}" />
+					<p:outputLabel value="产品版本：" />
+					<p:outputLabel value="#{jsfbootConfig.appVersion.productVersion}" />
+					<p:outputLabel value="开发商：" />
+					<p:outputLabel value="#{jsfbootConfig.appVersion.companyName}" />
+				</h:panelGrid>
+				<div class="EmptyBox20" />
+				<h:panelGrid columns="1" styleClass="Wid100">
+					<p:outputLabel value="产品介绍：" />
+					<p:outputLabel value="#{jsfbootConfig.appVersion.productDescription}" />
+				</h:panelGrid>
+				<div class="EmptyBox20" />
+				<h:panelGrid columns="1" styleClass="Wid100">
+					<p:outputLabel value="开发商介绍：" />
+					<p:outputLabel value="#{jsfbootConfig.appVersion.companyDescription}" escape="false" />
+				</h:panelGrid>
+			</p:panel>
+		</div>
+
+		<div class="ui-g-12 ui-lg-6">
+			<p:panel header="运行状态" style="height:100%;">
+				<h:outputText rendered="#{jsfbootConfig.runtimeInfo.developmentMode}">
+					<div class="ContainerIndent Red">
+						<h2 class="Fs20 fa fa-warning">请注意：系统正运行在开发模式！</h2>
+					</div>
+				</h:outputText>
+				<h:panelGrid columns="2" styleClass="Wid100" columnClasses="Wid30,Wid70">
+					<p:outputLabel value="是否WAR部署：" />
+					<p:outputLabel value="#{jsfbootConfig.runtimeInfo.archiveWebSite}" />
+					<p:outputLabel value="系统运行路径：" />
+					<p:outputLabel value="#{jsfbootConfig.runtimeInfo.webContentPath}" style="word-break:break-all;" />
+					<p:outputLabel value="配置文件路径：" />
+					<p:outputLabel value="#{jsfbootConfig.runtimeInfo.configSavePath}" style="word-break:break-all;" />
+				</h:panelGrid>
+				<div class="EmptyBox10" />
+				<h:panelGrid columns="2" styleClass="Wid100" columnClasses="Wid30,Wid70">
+					<p:outputLabel value="前后台主题：" />
+					<p:outputLabel
+						value="#{adminConsole.runStatusInfo.siteThemeName} / #{adminConsole.runStatusInfo.adminThemeName}" />
+					<p:outputLabel value="用户适配器：" />
+					<p:outputLabel value="#{adminConsole.runStatusInfo.currentAdapter}" />
+				</h:panelGrid>
+				<div class="EmptyBox10" />
+				<h:panelGrid columns="4" styleClass="Wid100"
+					columnClasses="Wid30,Wid20,Wid30,Wid20">
+					<p:outputLabel value="系统模块数量：" />
+					<p:outputLabel value="#{adminConsole.runStatusInfo.jmsiteModuleCount}" />
+					<p:outputLabel value="系统主题数量：" />
+					<p:outputLabel value="#{adminConsole.runStatusInfo.jmsiteThemeCount}" />
+					<p:outputLabel value="系统服务数量：" />
+					<p:outputLabel value="#{adminConsole.runStatusInfo.jmsiteServiceCount}" />
+					<p:outputLabel value="授权适配器数量：" />
+					<p:outputLabel value="#{adminConsole.runStatusInfo.userAdapterCount}" />
+				</h:panelGrid>
+			</p:panel>
+		</div>
+
+		<div class="ui-g-12">
+			<p:panel header="系统提示">
+				<ui:repeat value="#{adminConsole.runStatusInfo.appRunMessages}"
+					var="msg" size="#{adminConsole.runStatusInfo.appRunMessageShowSize}">
+					<p:outputLabel value="#{msg.time}">
+						<f:convertDateTime pattern="yyyy/MM/dd hh:mm:ss" timeZone="GMT+8"/>
+					</p:outputLabel>
+					<p:spacer width="10" />
+					<p:outputLabel value="#{msg.message}" />
+					<br />
+				</ui:repeat>
+			</p:panel>
+		</div>
+		
+		<div class="ui-g-12">
+			<p:panel header="小工具">
+			
+				<ui:repeat var="gadget" value="#{adminHelpView.dashboardGadgets}">
+				
+					<p:link outcome="#{gadget.outcome}" target="_blank" rendered="#{gadget.outcome!=null}">
+						<f:param name="#{gadget.param.key}" value="#{gadget.param.value}"/>
+		        		<p:panel style="text-align:center;margin:2px;" styleClass="Fleft">
+			        		<h:panelGrid columns="1" style="width:100%">
+								<h:outputText styleClass="Fs30 #{gadget.icon}"/>
+								<h:outputText value="#{gadget.title}"/>
+							</h:panelGrid>
+						</p:panel>
+					</p:link>
+					
+					<p:link href="#{gadget.url}" target="_blank" rendered="#{gadget.url!=null}">
+		        		<p:panel style="text-align:center;margin:2px;" styleClass="Fleft">
+			        		<h:panelGrid columns="1" style="width:100%">
+								<h:outputText styleClass="Fs30 #{gadget.icon}"/>
+								<h:outputText value="#{gadget.title}"/>
+							</h:panelGrid>
+						</p:panel>
+					</p:link>
+					
+				</ui:repeat>
+
+				<div class="ClearBoth"/>
+			</p:panel>
+		</div>
+	</ui:define>
+
+</ui:composition>

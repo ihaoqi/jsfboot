@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="统一配置" url="#" />
+		</p:breadCrumb>
+	</ui:define>
+	<ui:define name="content">
+		<div class="ui-lg-5 ui-g-12 ">
+			<p:panel header="配置表" id="regTable" styleClass="ui-fluid AlignHeight">
+				<f:facet name="actions">
+					<p:commandLink value=" 添加子项" update="regDetail"
+									styleClass="fa fa-plus-circle Fright MarTop5"
+									actionListener="#{adminRegistry.beginAddRegistryItem}" />
+				</f:facet>
+
+				<p:tree id="regtree" var="item" value="#{adminRegistry.treeRoot}"
+					selectionMode="single" dynamic="true" style="border:0px;padding:0px;">
+					<p:treeNode type="default" expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
+						<h:outputText value="#{item.name}" />
+					</p:treeNode>
+					<p:treeNode type="none">
+						<h:outputText value="" />
+					</p:treeNode>
+
+					<p:ajax event="select" listener="#{adminRegistry.onNodeSelect}"
+						update="regDetail" />
+					<p:ajax event="expand" listener="#{adminRegistry.onNodeExpand}"
+						update="regtree" />
+					<p:ajax event="collapse"
+						listener="#{adminRegistry.onNodeCollapse}" update="regtree" />
+				</p:tree>
+				<p:outputPanel
+					rendered="#{adminRegistry.treeRoot.childCount eq 0}"
+					style="padding-left:4em;">
+					<h2 class="fa fa-bullhorn">提示</h2>
+					<br />
+					<br />
+					<span class="gray">当前还没有任何结点，您可使用右边操作来添加。</span>
+				</p:outputPanel>
+			</p:panel>
+		</div>
+
+		<div class="ui-lg-7 ui-g-12">
+			<p:panel id="regDetail" style="height:100%;">
+				<f:facet name="header">
+					#{adminRegistry.selectItem != null ? adminRegistry.selectItem.path : '提示'}
+				</f:facet>
+				<h:form>
+					<ui:include src="registry/#{adminRegistry.detailPanel}.xhtml">
+						<ui:param name="item" value="#{adminRegistry.selectItem}" />
+						<ui:param name="tablePanel" value="regTable" />
+						<ui:param name="detailPanel" value="regDetail" />
+					</ui:include>
+				</h:form>
+			</p:panel>
+		</div>
+
+		<div class="ui-g-12">
+			<div class="card">
+				<span class="Fs12 gray fa fa-warning">
+					配置表用于存储系统与各模块的配置信息，如果不清楚具体用途建议不要随便修改；
+					更多信息可查看
+					<p:link outcome="#{adminHelpView.helpOutcome}" value="帮助文档" target="_blank">
+						<f:param name="page" value="/jsfboot-admin/system/registry"/>
+					</p:link>
+					。</span>
+			</div>
+		</div>
+	</ui:define>
+
+</ui:composition>

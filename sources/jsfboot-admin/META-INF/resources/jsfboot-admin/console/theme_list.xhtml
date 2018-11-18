@@ -1,0 +1,54 @@
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+			xmlns:h="http://java.sun.com/jsf/html"
+			xmlns:f="http://java.sun.com/jsf/core"
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+			xmlns:p="http://primefaces.org/ui">
+
+	<h:form>
+	<p:dataTable var="theme" value="#{adminConsole.themeList}" emptyMessage="一个主题都没有。"
+				rowIndexVar="rowId" paginator="true" paginatorPosition="bottom" rows="4" 
+				paginatorAlwaysVisible="false">
+		<p:column headerText="序号" width="3em;">
+			<h:outputText value="#{rowId+1}" />
+		</p:column>
+		<p:column headerText="模块信息">
+			<p><h:outputText value="名称：#{theme.modulePackage.moduleInfo.moduleName}" /></p>
+			<p><h:outputText value="版本：#{theme.modulePackage.moduleInfo.moduleVersion}" /></p>
+			<p><h:outputText value="标题：#{theme.modulePackage.moduleInfo.moduleTitle}" /></p>
+		</p:column>
+		<p:column headerText="主题界面" priority="4" styleClass="TexAlCenter">
+			<h:outputLink value="#{request.contextPath}#{theme.imagePath}"
+				target="_blank" title="点击预览大图">
+				<h:graphicImage value="#{theme.imagePath}"
+					alt="#{theme.modulePackage.moduleInfo.moduleTitle}" 
+					style="min-height:100px;max-height:200px;max-width:200px;border:1px solid #dee4e9;"/>
+			</h:outputLink>
+		</p:column>
+		<p:column headerText="前台" width="6em;" priority="6" styleClass="TexAlCenter"> 
+			<p:outputLabel styleClass="fa fa-check" value=" 支持" title="可应用于前台" rendered="#{theme.useSite}"/>
+			<p:outputLabel styleClass="fa fa-times" value=" 不支持" title="不支持前台" rendered="#{not theme.useSite}"/>
+			<p:outputPanel rendered="#{adminConsole.runStatusInfo.siteThemeName eq theme.modulePackage.moduleInfo.moduleName}">
+				<p:outputLabel styleClass="ui-button ui-state-default ui-corner-all MarTop5" 
+							style="color:#ffffff;cursor:default;margin-left:5px;padding-left:3px;padding-right:3px;"
+							value="当前" title="系统前台正使用此主题"/>
+			</p:outputPanel>
+		</p:column> 
+		<p:column headerText="后台" width="6em;" priority="6" styleClass="TexAlCenter"> 
+			<p:outputLabel styleClass="fa fa-check" value=" 支持" title="可应用于后台" rendered="#{theme.useAdmin}"/>
+			<p:outputLabel styleClass="fa fa-times" value=" 不支持" title="不支持后台" rendered="#{not theme.useAdmin}"/>
+			<p:outputPanel rendered="#{adminConsole.runStatusInfo.adminThemeName eq theme.modulePackage.moduleInfo.moduleName}">
+				<p:outputLabel styleClass="ui-button ui-state-default ui-corner-all MarTop5" 
+							style="color:#ffffff;cursor:default;margin-left:5px;padding-left:3px;padding-right:3px;"
+							value="当前" title="系统后台正使用此主题"/>
+			</p:outputPanel>
+		</p:column>
+		<p:column headerText="操作" width="6em;">
+			<p:commandLink value="配置" rendered="#{theme.confPage != null}"
+				ajax="false" immediate="true" action="console/theme_conf">
+				<f:param name="moduleName" value="#{theme.modulePackage.name}"/>
+			</p:commandLink>
+		</p:column>
+	</p:dataTable>
+	</h:form>
+	
+</f:subview>

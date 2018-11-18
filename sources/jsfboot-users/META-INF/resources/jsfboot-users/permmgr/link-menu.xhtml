@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="权限配置" outcome="../permmgr"/>
+			<p:menuitem value="选择菜单" url="#"/>
+		</p:breadCrumb>
+	</ui:define>
+	<ui:define name="content">
+		<h:form class="ui-g-12 ui-lg-6">
+			<p:panel header="选择要配置权限的菜单" styleClass="card AlignHeight">
+				
+				<h:panelGrid columns="2" styleClass="Wid100">
+					<h:panelGroup>
+						<p style="margin-left:2em;">前台主题 #{registryUserRole.themeNames.key}：</p>
+						<p:dataList var="mp" value="#{registryUserRole.linkMenus.source}" styleClass="ClearBorder">
+							<p:selectBooleanCheckbox value="#{mp.selected}"/>
+							<h:outputText value=" #{mp.position.title} (#{mp.position.name})" />
+						</p:dataList>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<p style="margin-left:2em;">后台主题 #{registryUserRole.themeNames.value}：</p>
+						<p:dataList var="mp" value="#{registryUserRole.linkMenus.target}" styleClass="ClearBorder">
+							<p:selectBooleanCheckbox value="#{mp.selected}"/>
+							<h:outputText value=" #{mp.position.title} (#{mp.position.name})" />
+						</p:dataList>
+					</h:panelGroup>
+				</h:panelGrid>
+				
+				<div class="Separator"/>
+				<div class="TexAlCenter">
+					<p:commandButton value="确定" action="#{registryUserRole.saveLinkMenus}" 
+						style="width:7em;margin-right:1em;" ajax="false">
+					</p:commandButton>
+		       		<p:commandButton value="取消" ajax="false" immediate="true" 
+		       						action="../permmgr" style="width:7em;">
+		       		</p:commandButton>
+				</div>
+			</p:panel>
+		</h:form>
+		<div class="ui-g-12 ui-lg-6">
+			<div class="card ui-fluid AlignHeight">
+				<p:messages closable="true" showSummary="false" showDetail="true"/>
+				<p class="fa fa-bell-o" style="border-bottom:solid #888 2px;line-height:1.5em;padding:0px 2px;"> 说明</p>
+				<ol>
+					<li>没有选中的菜单将不受权限控制；</li>
+					<li>建议把前后台的主菜单都加入权限配置；</li>
+				</ol>
+			</div>
+		</div>
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,164 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="head">
+		<style type="text/css">
+			.ui-row-editor .ui-icon-check{
+				margin-right:0.8em;
+			}
+		</style>
+	</ui:define>
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="数据连接" url="#" />
+		</p:breadCrumb>
+	</ui:define>
+	<ui:define name="content">
+		<div class="ui-g-12">
+			<h:form styleClass="card ClearPadding">
+			<p:dataTable value="#{adminDataSource.bindSourceList}" var="ds"
+				rowIndexVar="index" editable="true" emptyMessage="没有可配置的数据连接。" >
+				<f:facet name="header">
+					<div class="Fleft">模块数据源配置</div>
+					<div class="clearfix"/>
+				</f:facet>
+				<p:column headerText="#" width="1em;">
+					<h:outputText value="#{index+1}" />
+				</p:column>
+				<p:column headerText="模块名称" width="10em;" priority="5">
+					<h:outputText value="#{ds.moduleTitle}" />
+				</p:column>
+				<p:column headerText="数据源名称" width="13em;">
+					<h:outputText value="#{ds.key}" />
+					<p:commandLink title="连接测试" rendered="#{ds.bindJndi!=null}"
+						styleClass="fa fa-rocket" style="margin-left:1em;"
+						actionListener="#{adminDataSource.doCheckDataSource}"
+						oncomplete="PF('testDlg').show();">
+						<f:attribute name="jndiName" value="#{ds.key}" />
+					</p:commandLink>
+				</p:column>
+				<p:column headerText="数据源说明" priority="6">
+					<h:outputText value="#{ds.explan}" />
+				</p:column>
+				<p:column headerText="绑定数据源">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{ds.bindJndi}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{ds.bindJndi}" style="width:80%"
+								editable="true" styleClass="Fleft MarRight10">
+								<f:selectItems value="#{adminDataSource.customDataSources}" var="bar"
+									itemValue="#{bar.name}" itemLabel="#{bar.name}" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="操作" width="4em;" style="text-align:center;">
+					<p:rowEditor editTitle="修改" saveTitle="保存" cancelTitle="取消" />
+				</p:column>
+				<f:facet name="footer">
+					<span class="Fright Fs12" style="font-weight:normal;">
+						绑定数据源只能是本地JNDI数据源或自定义数据源名称
+					</span>
+					<div class="ClearBoth"/>
+				</f:facet>
+			</p:dataTable>
+			</h:form>
+			
+			<h:form styleClass="card ClearPadding">
+			<p:dataTable value="#{adminDataSource.customDataSources}" var="ds" 
+					rowIndexVar="index" emptyMessage="没有任何自定义的数据源。">
+				<f:facet name="header">
+					<div class="Fleft">自定义数据源</div>
+					<div class="clearfix"/>
+				</f:facet>
+					<p:column headerText="#" width="1em;">
+						<h:outputText value="#{index+1}" />
+					</p:column>
+				<p:column headerText="数据源名称" width="10em;">
+					<h:outputText value="#{ds.name}"/>
+					<p:commandLink styleClass="fa fa-rocket" style="margin-left:1em;"
+									title="连接测试" rendered="#{ds.name!=null}"
+									actionListener="#{adminDataSource.doCheckDataSource}"
+									oncomplete="PF('testDlg').show();">
+						<f:attribute name="definition" value="#{ds}" />
+					</p:commandLink>
+				</p:column>
+				<p:column headerText="数据源说明" width="20em;">
+					<h:outputText value="#{ds.explain}"/>
+				</p:column>
+				<p:column headerText="链接字符串">
+					<h:outputText value="#{ds.connectionUrl}" style="word-wrap:break-word;white-space:normal;"/>
+				</p:column>
+				<p:column headerText="操作" width="8em;">
+					<p:commandLink value=" 修改" action="data-sources/add-custom"
+						styleClass="fa fa-edit MarRight10" ajax="false">
+						<f:param name="jndiName" value="#{ds.name}"/>
+					</p:commandLink>
+					
+					<p:commandLink value=" 删除" styleClass="fa fa-trash-o" ajax="false"
+						actionListener="#{adminDataSource.doDeleteCustomSource}">
+						<f:attribute name="jndiName" value="#{ds.name}"/>
+						<p:confirm header="删除数据源" icon="ui-icon-alert"
+							message="您确定要删除 #{ds.name} 吗？删除后将不可恢复。"/>
+					</p:commandLink>
+				</p:column>
+		
+		    	<f:facet name="footer"> 
+		    		<p:commandLink value=" 添加数据源" style="margin:5px;" ajax="false" 
+		    						styleClass="Fleft fa fa-plus-circle" immediate="true"
+		    						action="data-sources/add-custom">
+		    		</p:commandLink>
+		    		<div class="ClearBoth"/>
+		    	</f:facet>
+			</p:dataTable>
+			</h:form>
+			
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		        <p:commandButton value="确定" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+		        <p:commandButton value="取消" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		    </p:confirmDialog>
+
+			<div class="card">
+				<span class="Fs12 gray fa fa-warning"> 点击图标 <i class="fa fa-rocket" />
+					可对数据源进行连接测试， 更多信息可查看
+					<p:link outcome="#{adminHelpView.helpOutcome}" value="帮助文档" target="_blank">
+						<f:param name="page" value="/jsfboot-admin/system/data-sources"/>
+					</p:link>。
+				</span>
+			</div>
+		</div>
+
+		<p:dialog header="连接测试" widgetVar="testDlg" dynamic="true"
+				modal="true" height="200" width="500">
+			<h:form id="dlgForm">
+				<p:poll widgetVar="poll" autoStart="false" interval="1" update="msgs"/>
+				
+				<p:dataList id="msgs" value="#{adminDataSource.checkMessages}" var="msg"
+							type="ordered" rowIndexVar="index" styleClass="ClearBorder"
+							emptyMessage="没有任何信息。">
+					#{msg}
+				</p:dataList>
+			</h:form>
+			<p:ajax event="open" onstart="PF('poll').start();" update=":dlgForm:msgs"/>
+			<p:ajax event="close" onstart="PF('poll').stop();"/>
+			
+			<f:facet name="footer">
+				<div>
+	               	<p:commandButton value="关闭" type="button" 
+	               		onclick="PF('testDlg').hide();" styleClass="Fright"/>
+	               	<div class="ClearBoth"/>
+                </div>
+            </f:facet>
+		</p:dialog>
+		
+	</ui:define>
+
+</ui:composition>

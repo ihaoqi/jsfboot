@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="系统帐号" outcome="../usermgr"/>
+			<p:menuitem value="修改密码" url="#"/>
+		</p:breadCrumb>
+	</ui:define>
+	<ui:define name="content">
+		<div class="ui-g-12">
+			<h:form class="card">
+				<p:panel header="修改密码" styleClass="card AlignHeight Wid50">
+					<h:panelGrid columns="2" styleClass="ui-fluid Wid100">
+						<h:outputText value="系统账号"/>
+						<h:outputText value="#{registryUserGroup.addUserForm.loginId} (#{registryUserGroup.addUserForm.userName})"/>
+
+						<h:outputLabel value="旧的密码" for="password"/>
+						<p:password id="password" value="#{registryUserGroup.addUserForm.password}">
+						</p:password>
+						
+						<h:outputLabel value="新的密码" for="password1"/>
+						<p:password id="password1" value="#{registryUserGroup.addUserForm.password}"
+									placeholder="不能少于6个字符" feedback="true"
+									promptLabel="输入密码" weakLabel="强度：弱" label="登录密码"
+	                    			goodLabel="强度：好" strongLabel="强度：非常好"
+									required="true" requiredMessage="登录密码不能为空。">
+							<f:validateLength minimum="6" maximum="100"/>
+						</p:password>
+						
+						<h:outputLabel value="再输一次" for="password2"/>
+						<p:password id="password2" value="#{registryUserGroup.addUserForm.password}"
+									required="true" requiredMessage="登录密码不能为空。">
+						</p:password>
+
+					</h:panelGrid>
+					
+					<div class="Separator"/>
+					<div class="TexAlCenter">
+						<p:commandButton value="确定" actionListener="#{registryUserGroup.endEditPassowrd}"
+										style="width:7em;margin-right:1em;" ajax="false">
+						</p:commandButton>
+						
+			       		<p:commandButton value="取消" ajax="false" immediate="true" 
+			       						action="../usermgr" style="width:7em;">
+			       		</p:commandButton>
+					</div>
+				</p:panel>
+			</h:form>
+		</div>
+	</ui:define>
+
+</ui:composition>

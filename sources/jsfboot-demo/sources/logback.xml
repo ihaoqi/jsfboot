@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	
+	<!-- 定义输出到控制台 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} %-5level %logger - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="ASYNC_STDOUT" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold>
+		<queueSize>2048</queueSize>
+		<appender-ref ref="STDOUT" />
+	</appender>
+	
+	<!-- 定义输出到文件 -->
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.base}/logs/easyeip-tsms.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${catalina.base}/logs/easyeip-tsms.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<maxHistory>7</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<Pattern>%d{HH:mm:ss.SSS} %-5level %logger - %msg%n</Pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold>
+		<queueSize>2048</queueSize>
+		<appender-ref ref="FILE" />
+	</appender>
+	
+	<!-- 强制以下类按指定LOG级别输出 -->
+	<logger name="org.apache.tomcat.util.digester.Digester" level="WARN" />
+	<logger name="org.apache.commons.digester" level="WARN" />
+	
+	<!-- ERROR、WARN、 INFO、DEBUG-->
+	<root level="INFO">
+		<appender-ref ref="ASYNC_STDOUT" />
+		<appender-ref ref="ASYNC_FILE" />
+	</root>
+
+</configuration>

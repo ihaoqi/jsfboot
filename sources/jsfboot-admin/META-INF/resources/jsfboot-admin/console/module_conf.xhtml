@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="模块选项" outcome="../console"/>
+			<p:menuitem value="模块配置" url="#" />
+		</p:breadCrumb>
+	</ui:define>
+    <ui:define name="content">
+    	<div class="ui-g-12">
+    	<p:panel header="#{adminConsole.showModule.row.moduleInfo.moduleTitle}" style="border:0px;">
+			<f:facet name="actions">
+				<h:form class="Fright" style="padding-left:5px;padding-right:5px;">
+					<p:commandLink value="详情" action="module_info" ajax="false" immediate="true"
+							rendered="#{''.equals(adminConsole.showModule.confpage) eq false}">
+						<f:param name="moduleName" value="#{adminConsole.showModule.row.name}"/>
+					</p:commandLink>
+				</h:form>
+			</f:facet>
+			<div class="ui-g">
+		    	<ui:include src="#{adminConsole.showModule.confpage}">
+		    		<ui:param name="module" value="adminConsole.showModule.row"/>
+		    	</ui:include>
+	    	</div>
+    	</p:panel>
+    	</div>
+
+    </ui:define>
+
+</ui:composition>

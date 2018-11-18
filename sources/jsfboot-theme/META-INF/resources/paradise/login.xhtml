@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+            <link rel="shortcut icon" href="#{request.contextPath}/favicon.ico"/>
+        </f:facet>
+        <title>#{paradiseTheme.config.appTitle}</title>
+        
+     	<style type="text/css">
+     		.not-background{
+	      			padding-top:100px;
+	      	}
+	      	@media (max-width: 641px) {
+	      		.not-background{
+	      			background: #fff;
+	      			padding-top:0px;
+	      		}
+	      	}
+		</style>
+    </h:head>
+
+    <h:body styleClass="login-body not-background">
+
+        <form action="#{request.contextPath}/jsfboot_login" method="post" 
+        		class="login-panel ui-fluid" style="margin-top:0px;">
+            <div class="ui-g">
+                <div class="ui-g-12 logo-container" style="padding: 30px 50px 25px 50px;">
+                	<IMG alt="" src="#{request.contextPath}#{paradiseTheme.config.loginLogoUrl}" class="logo"/>
+                    <p:graphicImage name="layout/images/login/icon-login.png" library="paradise" styleClass="login-icon" />
+                    <h2>#{paradiseTheme.config.welcomeTitle}</h2>
+                </div>
+                <div class="ui-g-12">
+                    <p:outputLabel for="username" value="用户名" />
+                    <div class="input-wrapper">
+                        <p:inputText id="username" placeholder="用户名" style="padding:6px;font-size:15px;"/>
+                        <i class="fa fa-user" />
+                    </div>
+                </div>
+                <div class="ui-g-12">
+                    <p:outputLabel for="password" value="密码" />
+                    <div class="input-wrapper">
+                        <p:password id="password" placeholder="密码" feedback="false" style="padding:6px;font-size:15px;"/>
+                        <i class="fa fa-lock" />
+                    </div>
+                </div>
+                <p:outputPanel styleClass="ui-g-12 chkbox-container" rendered="#{paradiseTheme.config.forgetPasswordUrl!=null}">
+                    <div class="ui-g-6 ui-md-6">
+                        <h:outputLink target="_blank" value="#{request.contextPath}#{paradiseTheme.config.forgetPasswordUrl}">
+                            	忘记了密码?
+                        </h:outputLink>
+                    </div>
+                    <!-- 
+                    <div class="ui-g-6 rememberme-container">
+                        <p:outputLabel for="remember-me" value="记住我"/>
+                        <p:selectBooleanCheckbox id="remember-me" />
+                    </div>
+                     -->
+                </p:outputPanel>
+                <p:outputPanel rendered="#{SPRING_SECURITY_LAST_EXCEPTION != null}"
+                	style="color:#f00;width:100%;text-align:center;">
+                	<h:outputText value="用户名或密码错误！ "/>
+                </p:outputPanel>
+                <div class="ui-g-12 button-container" style="margin-bottom:2em;">
+                    <input type="submit" value="登录" style="padding:8px;"
+                    	class="ui-button ui-widget ui-state-default ui-corner-all blue-btn raised-btn"/>
+                </div>
+                
+                <h:outputStylesheet name="layout/css/layout-default.css" library="paradise" />
+            </div>
+        </form>
+    </h:body>
+
+</html>

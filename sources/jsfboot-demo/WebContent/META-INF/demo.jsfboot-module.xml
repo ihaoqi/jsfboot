@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsfboot-module xmlns="http://jsfboot.easyeip.com/jsfboot-module"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jsfboot.easyeip.com/jsfboot-module http://www.easyeip.com/schema/jsfboot/jsfboot-module-1.0.xsd ">
+	<module-version>
+		<module-name>jsfboot-demo</module-name>
+		<module-title>jsfboot-演示模块</module-title>
+		<module-version>1.0.0</module-version>
+	</module-version>
+	
+	<page-resource>
+		<site-menu>
+			<menu-item name="demo1" title="测试页面1" icon="fa fa-bed" outcome="/demo1">
+			</menu-item>
+		</site-menu>
+	</page-resource>
+	
+</jsfboot-module>

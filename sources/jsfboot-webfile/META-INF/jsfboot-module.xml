@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsfboot-module xmlns="http://jsfboot.easyeip.com/jsfboot-module"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jsfboot.easyeip.com/jsfboot-module http://www.easyeip.com/schema/jsfboot/jsfboot-module-1.0.xsd">
+	
+	<module-version>
+		<module-name>jsfboot-webfile</module-name>
+		<module-title>jsfboot文件管理</module-title>
+		<module-version>1.0.0</module-version>
+		<company-name>www.easyeip.com</company-name>
+		<company-description>瑞宝软件</company-description>
+	</module-version>
+	
+	<define-service>
+		<service name="com.easyeip.jsfboot.webfile.WebfileResourceService"
+				class="com.easyeip.jsfboot.webfile.service.WebfileResourceServiceImpl"
+				explain="Web文件管理服务">
+			<option name="provider">
+				<explain>web文件管理实现，支持registry、winlinux两种，默认为registry。</explain>
+				<value>registry</value>
+			</option>
+		</service>
+		<service name="com.easyeip.jsfboot.webfile.WebfileDownloadService"
+				class="com.easyeip.jsfboot.webfile.service.WebfileDownloadServiceImpl"
+				explain="web文件下载服务">
+		</service>
+	</define-service>
+
+	<page-resource>
+		<admin-menu anchor="system">
+			<menu-item name="multimedia" title="文件资源" outcome="/multimedia" icon="fa fa-image">
+				<public-pages>/custom-path.xhtml</public-pages>
+			</menu-item>
+		</admin-menu>
+		<!-- 
+		<admin-menu anchor="">
+			<menu-item name="resource" title="文件管理" icon="fa fa-hdd-o">
+				<menu-item name="multimedia" title="文件资源" outcome="/multimedia" icon="fa fa-image">
+					<public-pages>/custom-path.xhtml</public-pages>
+				</menu-item>
+				<menu-item name="download" title="下载管理" outcome="/download" icon="fa fa-cloud-download"/>
+				<menu-item name="web-pages" title="页面设计" outcome="/download" icon="fa fa-delicious"/>
+				<menu-item name="web-articles" title="文章管理" outcome="/download" icon="fa fa-file-word-o"/>
+			</menu-item>
+		</admin-menu>
+		 -->
+	</page-resource>
+
+</jsfboot-module>

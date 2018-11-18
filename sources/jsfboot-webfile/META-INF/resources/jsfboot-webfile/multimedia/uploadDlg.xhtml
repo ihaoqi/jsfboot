@@ -1,0 +1,56 @@
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+			xmlns:h="http://java.sun.com/jsf/html"
+			xmlns:f="http://java.sun.com/jsf/core"
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+			xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="uploadDlg" modal="true" widgetVar="uploadDlg" width="600" height="300"
+				header="文件夹：#{folder.raw.fullPath}" dynamic="true">
+		
+		<style type="text/css">
+			.ui-fileupload-content .ui-progressbar{
+				width:100px;
+			}
+		</style>
+
+		<h:form>
+			
+			<p:fileUpload label="选择文件" uploadLabel="上传" cancelLabel="清除" auto="true"
+						update="dlgMsg,fileListPanel" multiple="false" mode="advanced"
+						sizeLimit="#{webFileManager.fileUploadLimit*1024}"
+						invalidSizeMessage="文件最大只允许#{webFileManager.fileUploadLimit}K"
+						invalidFileMessage="不支持的文件类型。"
+						fileUploadListener="#{webFileManager.handleFileUpload}"
+						onstart="PF('saveStatus').show();" oncomplete="PF('saveStatus').hide();"/>
+						
+			<p:messages id="dlgMsg" showDetail="true" showSummary="false" closable="true"/>
+						
+		</h:form>
+
+		<div class="EmptyBox20"/>
+		
+		<span class="gray fa fa-warning"> 说明</span>
+		<ol>
+			<li>上传不限制文件格式，但文件大小不能超过 #{webFileManager.fileUploadLimit}K；</li>
+			<li>一次只能上传一个文件，选择文件后将立即自动上传；</li>
+			<li>建议文件名与路径中都不要包含中文，防止应编码问题无法访问。</li>
+		</ol>
+				
+		<p:dialog widgetVar="saveStatus" closable="false" modal="true">
+			<div class="TexAlCenter">
+				<i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+				<p>正在上传，请稍后...</p>
+			</div>
+		</p:dialog>
+		
+		<f:facet name="footer">
+			<div class="Fright">
+               	<p:commandButton value="关闭" style="width:6em;"
+               		onclick="PF('uploadDlg').hide();" update="uploadDlgPanel"/>
+               </div>
+            <div class="ClearBoth"/>
+        </f:facet>
+           
+	</p:dialog>
+	
+</f:subview>

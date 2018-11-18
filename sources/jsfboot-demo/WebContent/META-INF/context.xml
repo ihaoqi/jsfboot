@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+
+	<!-- 把下面Resource定义放到tomcat conf/context.xml文件里面 -->
+
+	<!-- 使用阿里巴巴的Druid配置针对MySQL数据库的JNDI数据源 -->
+	<Resource name="jdbc/MysqlJmsite" auth="Container" type="javax.sql.DataSource"
+		factory="com.alibaba.druid.pool.DruidDataSourceFactory"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://192.168.2.120:3306/jsfboot?useUnicode=true&amp;characterEncoding=utf-8"
+		username="jeesite" password="jeesite" maxActive="50" maxWait="10000"
+		removeabandoned="true" removeabandonedtimeout="60" logabandoned="false"
+		filters="stat" testWhileIdle="true">
+	</Resource>
+
+</Context>

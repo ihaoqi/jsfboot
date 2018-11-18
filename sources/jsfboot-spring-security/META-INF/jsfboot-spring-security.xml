@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+        http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://www.springframework.org/schema/security  
+        http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<!-- 网站资源不需要控制权限 -->
+	<http pattern="/favicon.ico" security="none" />
+	<http pattern="/druid/**" security="none" />
+	
+	<!-- jsf资源不需要控制权限 -->
+	<http pattern="/javax.faces.resource/**" security="none" />
+
+	<!-- jsfboot资源与主题不需要控制权限 -->
+	<http pattern="/jsfboot-bundle/**" security="none" />
+	<http pattern="/jresource/**" security="none" />
+	<http pattern="/paradise/**" security="none" />
+	
+
+	<http use-expressions="false" access-decision-manager-ref="accessDecisionManager">
+		<!-- 首页允许匿名访问 -->
+		<intercept-url pattern="/jsfboot-default.xhtml*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+
+		<!-- jsfboot导航用自己的权限控制器 -->
+		<intercept-url pattern="/jpn/**" access="JSFBOOT_ACCOUNT" />
+
+		<!-- 其他页面与资源都禁止访问 -->
+		<intercept-url pattern="/**" access="JSFBOOT_DENYALL" />
+
+		<!-- 配置登录页面 -->
+		<form-login login-page='/paradise/login.xhtml'
+			login-processing-url="/jsfboot_login"
+			authentication-failure-url='/paradise/login.xhtml?error'
+			username-parameter="username" password-parameter="password" />
+
+		<!-- 登出功能 -->
+		<logout logout-url="/jsfboot_logout"
+			logout-success-url="/" invalidate-session="true" />
+
+		<!-- 允许匿名访问，但在系统中您需要有guest这个账户 -->
+		<anonymous username="guest" enabled="true"/>
+		
+		<!-- 关闭跨站请求伪造防护，暂不支持（原因是需要使用spring form标签） -->
+		<csrf disabled="true" />
+	</http>
+
+	<!-- 定义jsfboot账号访问服务 -->
+	<authentication-manager>
+		<authentication-provider user-service-ref="userDetailsService">
+			<password-encoder hash="md5">
+				<salt-source user-property="username" />
+			</password-encoder>
+		</authentication-provider>
+	</authentication-manager>
+
+	<beans:bean id="userDetailsService"
+		class="com.easyeip.jsfboot.secutiry.spring.AccountDetailsService">
+		<!--
+			设置超级用户名与密码，密码要md5，加密格式为：密码{用户名}
+			在线生成密码：https://md5jiami.51240.com/
+		 -->
+		<beans:property name="superAdminUsername" value="superAdmin" />
+		<beans:property name="superAdminPassword" value="571455f3a099fb525bb1b822ba1d6601" />
+	</beans:bean>
+
+	<!-- 定义jsfboot访问权限投票器 -->
+	<beans:bean id="accessDecisionManager"
+		class="org.springframework.security.access.vote.AffirmativeBased">
+		<beans:constructor-arg name="decisionVoters">
+			<beans:list>
+				<beans:ref bean="JsfbootJpnVoter" />		<!-- 支持JSFBOOT_* -->
+				<beans:ref bean="authenticatedVoter" />		<!-- 支持IS_AUTHENTICATED_* -->
+			</beans:list>
+		</beans:constructor-arg>
+		<beans:property name="messageSource" ref="messageSource" />
+	</beans:bean>
+
+	<beans:bean id="JsfbootJpnVoter"
+		class="com.easyeip.jsfboot.secutiry.spring.JsfbootJpnVoter">
+		<beans:property name="rolePrefix" value="JSFBOOT_" />
+	</beans:bean>
+
+	<beans:bean id="authenticatedVoter"
+		class="org.springframework.security.access.vote.AuthenticatedVoter" />
+
+	<beans:bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<beans:property name="basename"
+			value="classpath:org/springframework/security/messages_zh_CN" />
+	</beans:bean>
+</beans:beans>

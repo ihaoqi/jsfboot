@@ -1,0 +1,39 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pa="http://primefaces.org/paradise">
+
+	<style type="text/css">
+		.topbar .titlebar{
+			font-size:2em;
+			margin-left:36px;
+			vertical-align: middle;
+			width:200px;
+		}
+		@media (max-width: 640px) {
+			.topbar .titlebar {
+			    display: none;
+			}
+		}
+	</style>
+	
+    <div class="topbar">
+		<a href="#{request.contextPath}/jpn" class="topbar-logo">
+			<IMG alt="#{paradiseTheme.config.appTitle}"
+				src="#{request.contextPath}#{jsfbootTheme.pageDomain=='Admin'?paradiseTheme.config.adminHeadLogoUrl:paradiseTheme.config.siteHeadLogoUrl}" />
+        </a>
+        
+		<h:outputText rendered="#{paradiseTheme.config.titleBarType=='title'}">
+			<span class="titlebar">#{paradiseTheme.config.titleBarValue}</span>
+		</h:outputText>
+        
+        <a href="#" id="user-display">
+            <span class="username">#{paradiseTheme.config.accountTitle}</span>
+			<IMG alt="" src="#{request.contextPath}#{paradiseTheme.config.accountAvatar}" style="border: 0px;"/>
+        </a>
+    </div>
+
+</ui:composition>

@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{jsfbootTheme.template.main}">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="权限配置" outcome="permmgr" />
+			<p:menuitem value="角色管理" url="#" />
+		</p:breadCrumb>
+	</ui:define>
+	<ui:define name="content">
+		<p:growl id="growl" showDetail="true" showSummary="false" globalOnly="false"/>
+		<div class="ui-g-12">
+			<h:form class="card">
+				<div>
+					<div class="Fleft">
+						<p:commandButton value="添加角色" action="permmgr/add-role"
+										ajax="false" icon="fa fa-plus-circle">
+						</p:commandButton>
+					</div>
+					<div class="ClearBoth" />
+					<div class="Separator" />
+				</div>
+
+				<p:dataTable id="rolelist" value="#{registryUserRole.roleList}" var="role"
+							rowIndexVar="row" emptyMessage="无任何角色。"
+							paginator="true" paginatorPosition="bottom" rows="15" paginatorAlwaysVisible="false">
+					<p:column headerText="#" width="2em;">
+						#{row+1}
+					</p:column>
+					<p:column headerText="名称">
+						#{role.title}
+					</p:column>
+					<p:column headerText="代码" width="10em;">
+						#{role.code}
+					</p:column>
+					<p:column headerText="说明">
+						#{role.explain}
+					</p:column>
+
+					<p:column headerText="操作" width="8em;">
+						<p:commandLink value=" 修改" styleClass="fa fa-edit MarRight10" 
+								action="permmgr/add-role" ajax="false">
+							<f:param name="role" value="#{role.code}"/>
+						</p:commandLink>
+						
+						<p:commandLink value=" 删除" styleClass="fa fa-trash-o " 
+								actionListener="#{registryUserRole.delAccountRole}"
+								update="growl,rolelist">
+							<f:attribute name="role1" value="#{role}"/>
+							<p:confirm header="删除角色" icon="ui-icon-alert"
+								message="您确定要删除 #{role.title} 吗？删除后将不可恢复。"/>
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</div>
+		
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+	        <p:commandButton value="确定" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+	        <p:commandButton value="取消" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+	    </p:confirmDialog>
+	</ui:define>
+
+</ui:composition>

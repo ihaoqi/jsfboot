@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsfboot-module xmlns="http://jsfboot.easyeip.com/jsfboot-module"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jsfboot.easyeip.com/jsfboot-module http://www.easyeip.com/schema/jsfboot/jsfboot-module-1.0.xsd">
+	
+	<module-version>
+		<module-name>jsfboot-users</module-name>
+		<module-title>jsfboot用户授权</module-title>
+		<module-version>1.0.0</module-version>
+		<company-name>www.easyeip.com</company-name>
+		<company-description>瑞宝软件</company-description>
+	</module-version>
+	
+	<page-resource>
+		<admin-menu anchor="">
+			<menu-item name="security" title="管理授权" icon="fa fa-user-secret">
+				<menu-item name="usermgr" title="系统账号" outcome="/usermgr" icon="fa fa-user-md">
+					<public-pages>
+						/groupmgr.xhtml, /usermgr/add-group.xhtml,
+						/usermgr/add-user.xhtml, /usermgr/edit-pwd.xhtml
+					</public-pages>
+				</menu-item>
+				<menu-item name="permmgr" title="权限配置" outcome="/permmgr" icon="fa fa-key">
+					<public-pages>
+						/rolemgr.xhtml, /permmgr/add-role.xhtml,
+						/permmgr/link-menu.xhtml
+					</public-pages>
+				</menu-item>
+			</menu-item>
+		</admin-menu>
+	</page-resource>
+	
+	<define-service>
+		<service name="com.easyeip.jsfboot.user.registry.RegistryUserManager"
+				class="com.easyeip.jsfboot.user.registry.RegistryUserManager"
+				explain="基于注册表的系统用户管理实现">
+		</service>
+		<service name="com.easyeip.jsfboot.user.registry.AccountRealmService"
+				class="com.easyeip.jsfboot.user.registry.AccountRealmService"
+				explain="基于注册表的账号查询与权限处理">
+		</service>
+	</define-service>
+	
+	<account-realm title="基于注册表的系统用户管理实现" explain="数据存储在注册表中。">
+		<ref-service>com.easyeip.jsfboot.user.registry.AccountRealmService</ref-service>
+	</account-realm>
+
+</jsfboot-module>

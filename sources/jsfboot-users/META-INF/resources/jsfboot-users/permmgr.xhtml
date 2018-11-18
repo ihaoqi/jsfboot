@@ -1,0 +1,74 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{jsfbootTheme.template.main}">
+	
+	<ui:define name="head">
+		<style type="text/css">
+			.MenuWidth{
+				width:20em;
+			}
+			.RoleWidth{
+				width:6em;
+			}
+		</style>
+	</ui:define>
+	
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem url="#" />
+			<p:menuitem value="权限配置" url="#" />
+		</p:breadCrumb>
+	</ui:define>
+	<ui:define name="content">
+		<div class="ui-g-12">
+			<div class="card">
+				<h:form id="toolForm">
+					<div class="Fleft">
+						<p:commandButton value="选择菜单" action="permmgr/link-menu"
+										ajax="false" icon="fa fa-navicon" styleClass="MarRight5">
+						</p:commandButton>
+						<p:commandButton value="角色管理" action="rolemgr" 
+										ajax="false" icon="fa fa-slideshare" styleClass="MarRight5">
+						</p:commandButton>
+					</div>
+					<div class="Fright">
+						<p:commandButton value="保存修改" actionListener="#{registryUserRole.saveRoleMenuTree}"
+							onclick="PF('saveStatus').show();"
+							ajax="false" icon="fa fa-save" styleClass="raised-btn red-btn">
+						</p:commandButton>
+					</div>
+					<div class="ClearBoth" />
+					<div class="Separator" />
+				</h:form>
+				
+				<h:form id="listForm">
+					<p:treeTable id="permList" value="#{registryUserRole.roleMenuTree}" var="node"
+								emptyMessage="请先选择需要配置权限的菜单。">
+						<p:column headerText="菜单标题" styleClass="MenuWidth">
+							<h:outputText value=" #{node.title}" styleClass="#{node.icon}"/>
+						</p:column>
+						<p:columns var="role" value="#{registryUserRole.roleList}" styleClass="RoleWidth TexAlCenter">
+							<f:facet name="header"> #{role.title} </f:facet>
+							<p:selectBooleanCheckbox value="#{node.roles[role.code].selected}">
+								<p:ajax update=":listForm:permList" />
+							</p:selectBooleanCheckbox>
+						</p:columns>
+						<p:column>
+						</p:column>
+					</p:treeTable>
+				</h:form>
+			</div>
+		</div>
+		
+		<p:dialog widgetVar="saveStatus" modal="true" closable="false">
+			<div class="TexAlCenter">
+				<i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+				<p>正在保存，请稍后...</p>
+			</div>
+		</p:dialog>
+	</ui:define>
+
+</ui:composition>

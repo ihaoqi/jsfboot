@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://jsfboot.easyeip.com/jsfboot-module" 
+		elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://jsfboot.easyeip.com/jsfboot-module">
+
+    <element name="jsfboot-module" type="tns:JsfbootModuleType"></element>
+
+
+
+    <complexType name="MenuPageType">
+    	<sequence>
+    		<element name="menu-item" type="tns:MenuPageType"
+    			minOccurs="0" maxOccurs="unbounded">
+    		</element>
+    		<element name="page-action" type="tns:PageActionType"
+    			minOccurs="0" maxOccurs="unbounded">
+    			<annotation>
+    				<documentation></documentation>
+    			</annotation>
+    		</element>
+    		<element name="public-pages" type="string" minOccurs="0" maxOccurs="1">
+    			<annotation>
+    				<documentation>公共页面，用逗号隔开；以/开头表示本模块根目录，不以/开头表示与本菜单同级目录；</documentation>
+    			</annotation></element>
+    	</sequence>
+    	<attribute name="name" type="string" use="required">
+    		<annotation>
+    			<documentation>菜单ID，在整个菜单定义中要唯一；</documentation>
+    		</annotation>
+    	</attribute>
+    	<attribute name="title" type="string" use="required">
+    		<annotation>
+    			<documentation>菜单标题</documentation>
+    		</annotation>
+    	</attribute>
+    	<attribute name="icon" type="string" use="optional">
+    		<annotation>
+    			<documentation>
+    				菜单图标，参考RIO中的定义的图标，不需要加“icon-”；
+    			</documentation>
+    		</annotation>
+    	</attribute>
+    	<attribute name="outcome" type="string" use="optional">
+    		<annotation>
+    			<documentation>要输出的页面名称，如“/index”</documentation>
+    		</annotation>
+    	</attribute>
+    	<attribute name="explain" type="string" use="optional"></attribute>
+    </complexType>
+
+
+
+
+
+    <complexType name="JsfbootModuleType">
+    	<all>
+    		<element name="module-version" type="tns:ModuleVersionType"
+    			minOccurs="1" maxOccurs="1">
+    		</element>
+    		<element name="page-resource" type="tns:PageResourceType"
+    			minOccurs="0" maxOccurs="1">
+    		</element>
+    		<element name="account-realm" type="tns:AccountRealmType"
+    			minOccurs="0" maxOccurs="1">
+    		</element>
+
+    		<element name="define-service" type="tns:DefineServiceType"
+    			minOccurs="0" maxOccurs="1">
+    		</element>
+    		<element name="define-theme" type="tns:DefineThemeType"
+    			minOccurs="0" maxOccurs="1">
+    		</element>
+    		<element name="data-source" type="tns:DataSourceType"
+    			minOccurs="0" maxOccurs="1">
+    		</element>
+    	</all>
+    	<attribute name="load-on-startup" type="int" use="optional" default="0"></attribute>
+    </complexType>
+
+    <complexType name="ModuleVersionType">
+    	<all>
+    		<element name="module-name" type="string" minOccurs="1"
+    			maxOccurs="1">
+    		</element>
+    		<element name="module-version" type="string" minOccurs="1"
+    			maxOccurs="1">
+    		</element>
+    		<element name="module-title" type="string" minOccurs="1"
+    			maxOccurs="1">
+    		</element>
+    		<element name="module-description" type="string"
+    			minOccurs="0" maxOccurs="1">
+    		</element>
+    		<element name="company-name" type="string" minOccurs="0"
+    			maxOccurs="1">
+    		</element>
+    		<element name="company-description" type="string"
+    			minOccurs="0" maxOccurs="1">
+    		</element>
+    	</all>
+    </complexType>
+
+
+    <complexType name="DefineServiceType">
+    	<sequence>
+    		<element name="service" type="tns:ServiceItemType" minOccurs="0" maxOccurs="unbounded"></element>
+    	</sequence>
+    </complexType>
+
+
+    <complexType name="PageResourceType">
+        <annotation>
+        	<documentation></documentation>
+        </annotation>
+        <all>
+        	<element name="site-menu" type="tns:UserMenuType"
+        		minOccurs="0" maxOccurs="1">
+        		<annotation>
+        			<documentation>定义用户使用的菜单</documentation>
+        		</annotation>
+        	</element>
+        	<element name="admin-menu" type="tns:BackMenuType"
+        		minOccurs="0" maxOccurs="1">
+        		<annotation>
+        			<documentation>定义后台配置的菜单</documentation>
+        		</annotation>
+        	</element>
+
+        	<element name="conf-page" type="string" minOccurs="0" maxOccurs="1">
+        		<annotation>
+        			<documentation>模块配置页面</documentation>
+        		</annotation></element>
+        	<element name="public-pages" type="string" minOccurs="0"
+        		maxOccurs="1">
+        		<annotation>
+        			<documentation>公共页面资源，不需任何权限就可访问，如index.xhtml，syspages/*。</documentation>
+        		</annotation>
+        	</element>
+        </all>
+
+    </complexType>
+
+
+
+
+
+    <complexType name="ServiceItemType">
+    	<sequence>
+    		<element name="option" type="tns:ServiceOptionType"
+    			minOccurs="0" maxOccurs="unbounded">
+    			<annotation>
+    				<documentation>服务可配置的参数列表；</documentation>
+    			</annotation>
+    		</element>
+    	</sequence>
+    	<attribute name="name" type="string" use="required">
+    		<annotation>
+    			<documentation>服务的名称，建议为服务的接口名称；</documentation>
+    		</annotation>
+    	</attribute>
+    	<attribute name="class" type="string" use="required">
+    		<annotation>
+    			<documentation>服务要创建的类，必须有默认构造函数；</documentation>
+    		</annotation>
+    	</attribute>
+        <attribute name="explain" type="string" use="optional"></attribute>
+    </complexType>
+
+    <complexType name="ServiceOptionType">
+        <all>
+        	<element name="explain" type="string" minOccurs="0"
+        		maxOccurs="1">
+        	</element>
+        	<element name="value" type="string" minOccurs="0"
+        		maxOccurs="1">
+        		<annotation>
+        			<documentation>缺省值</documentation>
+        		</annotation>
+        	</element>
+        	<element name="ref-service" type="string" minOccurs="0" maxOccurs="1">
+        		<annotation>
+        			<documentation>引用服务</documentation>
+        		</annotation></element>
+        </all>
+        <attribute name="name" type="string" use="required">
+    		<annotation>
+    			<documentation>参数名称；</documentation>
+    		</annotation>
+    	</attribute>
+    </complexType>
+
+    <complexType name="AccountRealmType">
+    	<choice>
+    		<element name="use-class" type="string" minOccurs="0"
+    			maxOccurs="1">
+    			<annotation>
+    				<documentation>实现了UserAdapter接口的类名；</documentation>
+    			</annotation>
+    		</element>
+    		<element name="ref-service"
+    			type="string" minOccurs="0"
+    			maxOccurs="1">
+    		</element>
+    	</choice>
+        <attribute name="title" type="string" use="required"></attribute>
+        <attribute name="explain" type="string" use="optional"></attribute>
+    </complexType>
+
+
+    <complexType name="DefineThemeType">
+    	<all>
+    		<element name="primefaces-theme" type="string" minOccurs="0"
+    			maxOccurs="1">
+    		</element>
+    		<element name="page-template"
+    			type="tns:ThemePageTemplateType" minOccurs="1" maxOccurs="1">
+    		</element>
+    		<element name="conf-page" type="string" minOccurs="0"
+    			maxOccurs="1">
+    		</element>
+            <element name="login-page" type="string" minOccurs="0" maxOccurs="1"></element>
+            <element name="menu-position" type="tns:MenuPositionType"
+    			minOccurs="0" maxOccurs="1">
+    		</element>
+    		<element name="extend-template"
+    			type="tns:ThemeExtendTemplateType" minOccurs="0" maxOccurs="1">
+    		</element>
+    	</all>
+    	<attribute name="image" type="string" use="optional">
+    		<annotation>
+    			<documentation>
+    				主题缩略图在模块下的路径，如/image/preview.png
+    			</documentation>
+    		</annotation>
+    	</attribute>
+    	<attribute name="explain" type="string" use="optional"></attribute>
+    	<attribute name="use-site" type="boolean" use="required"></attribute>
+    	<attribute name="use-admin" type="boolean" use="required"></attribute>
+    </complexType>
+
+    <complexType name="ThemePageTemplateType">
+        <all>
+        	<element name="main-page" type="string" minOccurs="1"
+        		maxOccurs="1">
+        		<annotation>
+        			<documentation>含导航、标题的完整页面</documentation>
+        		</annotation>
+        	</element>
+        	<element name="only-content" type="string" minOccurs="0"
+        		maxOccurs="1">
+        		<annotation>
+        			<documentation>权内容区页面，不含导航、标题等</documentation>
+        		</annotation>
+        	</element>
+        	<element name="blank-page" type="string" minOccurs="0" maxOccurs="1">
+        		<annotation>
+        			<documentation>空白页面</documentation>
+        		</annotation></element>
+        </all>
+    </complexType>
+    
+    <complexType name="ThemeExtendTemplateType">
+    	<sequence>
+    		<element name="template"
+    			type="tns:ThemeTemplateItemType" minOccurs="0" maxOccurs="unbounded">
+    		</element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="ThemeTemplateItemType">
+    	<attribute name="name" type="string" use="required"></attribute>
+    	<attribute name="title" type="string" use="required"></attribute>
+    	<attribute name="outcome" type="string" use="required"></attribute>
+    </complexType>
+
+
+    <complexType name="MenuPositionType">
+    	<sequence>
+    		<element name="position" type="tns:PositionItemType" minOccurs="0" maxOccurs="unbounded"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="PositionItemType">
+    	<attribute name="name" type="string" use="required"></attribute>
+    	<attribute name="title" type="string" use="required"></attribute>
+    </complexType>
+
+    <complexType name="BackMenuType">
+    	<sequence>
+    		<element name="menu-item" type="tns:MenuPageType"
+    			minOccurs="0" maxOccurs="unbounded">
+    		</element>
+    	</sequence>
+    	<attribute name="anchor" type="string" use="required"></attribute>
+    	<attribute name="position" use="optional">
+    		<simpleType>
+    			<restriction base="string">
+    				<enumeration value="child"></enumeration>
+    				<enumeration value="next"></enumeration>
+    			</restriction>
+    		</simpleType>
+    	</attribute>
+    </complexType>
+
+    <complexType name="UserMenuType">
+    	<sequence>
+            <element name="use-service" type="string" minOccurs="0" maxOccurs="1">
+            	<annotation>
+            		<documentation>使用一个服务来生成菜单项，服务必须实现了com.easyeip.jsfstarter.core.module.UserMenuProvider接口。</documentation>
+            	</annotation></element>
+            <element name="menu-item" type="tns:MenuPageType"
+    			minOccurs="0" maxOccurs="unbounded">
+    		</element>
+    	</sequence>
+    </complexType>
+
+
+    <complexType name="DataSourceType">
+    	<attribute name="required" type="boolean" use="required" fixed="true">
+    		<annotation>
+    			<documentation>是否需要数据源，默认为false</documentation>
+    		</annotation></attribute>
+    	<attribute name="explain" type="string" use="required">
+    		<annotation>
+    			<documentation>数据源应用介绍</documentation>
+    		</annotation></attribute>
+    	<attribute name="default" type="string" use="optional">
+    		<annotation>
+    			<documentation>默认的数据源名称</documentation>
+    		</annotation></attribute>
+    </complexType>
+
+    <complexType name="PageActionType">
+    	<sequence>
+    		<element name="public-pages" type="string" minOccurs="0" maxOccurs="1"></element>
+    	</sequence>
+    	<attribute name="name" type="string" use="required"></attribute>
+    	<attribute name="title" type="string" use="required"></attribute>
+    	<attribute name="icon" type="string" use="optional"></attribute>
+    	<attribute name="outcome" type="string" use="optional">
+    		<annotation>
+    			<documentation>
+    				动作对应的页面；以/开头表示本模块根目录，不以/开头表示与本菜单同级目录；
+    			</documentation>
+    		</annotation>
+    	</attribute>
+    </complexType>
+</schema>
